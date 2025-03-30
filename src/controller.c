@@ -10,40 +10,48 @@
 #include <fcntl.h>
 #include <signal.h>
 // #include "common.h"
-// #include "ipc_utils.h"
+#include "ipc_utils.h"
 #include "config.h"
 
 #define LOG_FILE "DEIChain_log.txt"
 
 pid_t miner_pid, validator_pid, stats_pid;
-int shm_pool_id = -1, shm_ledger_id = -1;
-int msgq_id = -1;
 int log_fd;
 
-// void cleanup() {
-//     dprintf(log_fd, "[Controller] Encerrando sistema...\n");
+void cleanup() {
+    dprintf(log_fd, "[Controller] Encerrando sistema...\n");
 
-//     // Envia SIGTERM para todos os filhos
-//     if (miner_pid > 0) kill(miner_pid, SIGTERM);
-//     if (validator_pid > 0) kill(validator_pid, SIGTERM);
-//     if (stats_pid > 0) kill(stats_pid, SIGTERM);
+    // Envia SIGTERM para os processos filhos (caso existam)
+    if (miner_pid > 0) kill(miner_pid, SIGTERM);
+    if (validator_pid > 0) kill(validator_pid, SIGTERM);
+    if (stats_pid > 0) kill(stats_pid, SIGTERM);
 
-//     // Espera pelos processos filhos
-//     wait(NULL); wait(NULL); wait(NULL);
+    // Espera pelos filhos terminarem
+    wait(NULL);
+    wait(NULL);
+    wait(NULL);
 
-//     // Remove recursos IPC
-//     if (shm_pool_id != -1) shmctl(shm_pool_id, IPC_RMID, NULL);
-//     if (shm_ledger_id != -1) shmctl(shm_ledger_id, IPC_RMID, NULL);
-//     if (msgq_id != -1) msgctl(msgq_id, IPC_RMID, NULL);
+    // Remove as memórias partilhadas
+    if (shm_pool_id != -1) {
+        shmctl(shm_pool_id, IPC_RMID, NULL);
+        dprintf(log_fd, "[Controller] Memória partilhada do pool de transações removida.\n");
+    }
 
-//     unlink(PIPE_NAME);
-//     close(log_fd);
-//     exit(0);
-// }
+    if (shm_ledger_id != -1) {
+        shmctl(shm_ledger_id, IPC_RMID, NULL);
+        dprintf(log_fd, "[Controller] Memória partilhada do ledger removida.\n");
+    }
+
+    // Fecha o ficheiro de log
+    close(log_fd);
+    dprintf(STDOUT_FILENO, "[Controller] Log fechado. A sair...\n");
+
+    exit(0);
+}
 
 void handle_sigint(int sig) {
     dprintf(log_fd, "[Controller] Sinal SIGINT recebido. Limpando recursos...\n");
-    // cleanup();
+    cleanup();
 }
 
 int main() {
@@ -61,9 +69,10 @@ int main() {
     Config cfg = read_config("config.cfg");
     printf("%d\n", cfg.NUM_MINERS);
 
-    // // 2. Criar memórias partilhadas
-    // shm_pool_id = create_transaction_pool(cfg.TRANSACTION_POOL_SIZE);
-    // shm_ledger_id = create_ledger(cfg.BLOCK_SIZE);
+    // 2. Criar memórias partilhadas
+    shm_pool_id = create_transaction_pool(cfg.TRANSACTION_POOL_SIZE);
+    shm_ledger_id = create_ledger(cfg.BLOCK_SIZE);
+    sleep(100);
 
     // // 3. Criar fila de mensagens
     // msgq_id = create_message_queue();
