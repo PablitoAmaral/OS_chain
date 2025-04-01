@@ -1,3 +1,5 @@
+// Pablo Amaral 2021242404
+// Ricardo Paredes 2021221592
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,13 +20,16 @@ Config read_config(const char *filename) {
         int value;
 
         if (sscanf(line, "%[^=]=%d", key, &value) == 2) {
-            if (strcmp(key, "NUM_MINERS") == 0) cfg.NUM_MINERS = value;
-            else if (strcmp(key, "TRANSACTION_POOL_SIZE") == 0) cfg.TRANSACTION_POOL_SIZE = value;
-            else if (strcmp(key, "BLOCK_SIZE") == 0) cfg.BLOCK_SIZE = value;
-            else if (strcmp(key, "MAX_TRANSACTIONS") == 0) cfg.MAX_TRANSACTIONS = value;
-            else if (strcmp(key, "REWARD") == 0) cfg.REWARD = value;
-            else if (strcmp(key, "MAX_TTGEN") == 0) cfg.MAX_TTGEN = value;
-            else if (strcmp(key, "TTGEN_SLEEP") == 0) cfg.TTGEN_SLEEP = value;
+            if (strcmp(key, "NUM_MINERS") == 0)
+                cfg.NUM_MINERS = value;
+            else if (strcmp(key, "POOL_SIZE") == 0)
+                cfg.POOL_SIZE = value;
+            else if (strcmp(key, "TRANSACTIONS_PER_BLOCK") == 0)
+                cfg.TRANSACTIONS_PER_BLOCK = value;
+            else if (strcmp(key, "BLOCKCHAIN_BLOCKS") == 0)
+                cfg.BLOCKCHAIN_BLOCKS = value;
+            else if (strcmp(key, "TRANSACTION_POOL_SIZE") == 0)
+                cfg.TRANSACTION_POOL_SIZE = value;
         }
     }
 

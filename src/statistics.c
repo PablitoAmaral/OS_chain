@@ -1,3 +1,5 @@
+// Pablo Amaral 2021242404
+// Ricardo Paredes 2021221592
 #include <stdio.h>
 
 int main() {

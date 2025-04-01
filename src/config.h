@@ -1,18 +1,17 @@
+// Pablo Amaral 2021242404
+// Ricardo Paredes 2021221592
 #ifndef CONFIG_H
 #define CONFIG_H
 
-// Estrutura que guarda os parâmetros do ficheiro config.cfg
+// 
 typedef struct {
     int NUM_MINERS;
+    int POOL_SIZE;
+    int TRANSACTIONS_PER_BLOCK;
+    int BLOCKCHAIN_BLOCKS;
     int TRANSACTION_POOL_SIZE;
-    int BLOCK_SIZE;
-    int MAX_TRANSACTIONS;
-    int REWARD;
-    int MAX_TTGEN;
-    int TTGEN_SLEEP;
 } Config;
 
-// Função que lê o ficheiro de configuração e retorna a struct preenchida
 Config read_config(const char *filename);
 
 #endif // CONFIG_H
