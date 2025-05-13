@@ -18,26 +18,41 @@
 #include <sys/types.h>
 #include <sys/wait.h> // Para wait()
 #include <unistd.h>
+#include <semaphore.h>  // POSIX semaphores
+#include "ipc_utils.h"
+#include "config.h"
 
 #define LOG_FILE "DEIChain_log.txt"
+#define LOG_SEM_NAME "/DEIChain_logsem"
 
 pid_t miner_pid, validator_pid, stats_pid;
 int log_fd;
+sem_t *log_sem;  // semáforo para proteger o acesso ao log
 
 // Função auxiliar para escrever no log E no terminal
-void log_message(const char *format, ...) {
-  va_list args;
-  va_start(args, format);
+void log_message(const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    
+    // Adquire o semáforo para garantir acesso exclusivo ao log
+    if (sem_wait(log_sem) == -1) {
+        perror("sem_wait");
+    }
 
-  // Log no ficheiro
-  vdprintf(log_fd, format, args);
+    // Log no ficheiro
+    vdprintf(log_fd, format, args);
+    
+    // Reutiliza a lista de argumentos para imprimir no ecrã
+    va_end(args);
+    va_start(args, format);
+    vprintf(format, args);
 
-  // Reutiliza a lista de argumentos para imprimir no ecrã
-  va_end(args);
-  va_start(args, format);
-  vprintf(format, args);
+    // Liberta o semáforo
+    if (sem_post(log_sem) == -1) {
+        perror("sem_post");
+    }
 
-  va_end(args);
+    va_end(args);
 }
 
 void cleanup() {
@@ -68,9 +83,16 @@ void cleanup() {
     log_message("[Controller] Memória partilhada do ledger removida.\n");
   }
 
-  close(log_fd);
-  log_message("[Controller] Log fechado. A sair...\n");
-  exit(0);
+    
+
+    log_message("[Controller] Log fechado. A sair...\n");
+
+    // Remove o semáforo
+    sem_close(log_sem);
+    sem_unlink(LOG_SEM_NAME);
+
+    close(log_fd);
+    exit(0);
 }
 
 void handle_sigint(int sig) {
@@ -81,11 +103,23 @@ void handle_sigint(int sig) {
 int main() {
   signal(SIGINT, handle_sigint);
 
-  log_fd = open(LOG_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-  if (log_fd == -1) {
-    perror("Erro ao criar log");
-    exit(1);
-  }
+    //Criar semáforo para o log
+    sem_unlink(LOG_SEM_NAME); // Remove o semáforo se já existir
+    log_sem = sem_open(LOG_SEM_NAME,        
+                       O_CREAT | O_EXCL, 
+                       0644,    
+                       1);
+    if (log_sem == SEM_FAILED) {
+        perror("sem_open");
+        exit(1);
+    }
+
+
+    log_fd = open(LOG_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    if (log_fd == -1) {
+        perror("Erro ao criar log");
+        exit(1);
+    }
 
   log_message("[Controller] Iniciando DEIChain...\n");
 
