@@ -15,13 +15,7 @@ void* miner_thread(void* arg) {
     return NULL;
 }
 
-int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        fprintf(stderr, "Uso: %s <NUM_MINERS>\n", argv[0]);
-        exit(1);
-    }
-
-    int num_miners = atoi(argv[1]);
+void run_miner(int num_miners) {
     pthread_t threads[num_miners];
 
     printf("[Miner] Processo miner iniciado com %d threads\n", num_miners);
@@ -40,5 +34,4 @@ int main(int argc, char* argv[]) {
     }
 
     printf("[Miner] Todas as threads terminaram.\n");
-    return 0;
 }
