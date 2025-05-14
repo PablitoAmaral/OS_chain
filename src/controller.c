@@ -66,10 +66,23 @@ void cleanup() {
   if (stats_pid > 0)
     kill(stats_pid, SIGTERM);
 
-  // Espera pelos filhos terminarem
-  wait(NULL);
-  wait(NULL);
-  wait(NULL);
+  // Espera pelos filhos terminarem individualmente e regista o status
+  int status;
+  if (miner_pid > 0) {
+      waitpid(miner_pid, &status, 0);
+      log_message("[Controller] Miner (pid=%d) exited with %d\n",
+                  miner_pid, WEXITSTATUS(status));
+  }
+  if (validator_pid > 0) {
+      waitpid(validator_pid, &status, 0);
+      log_message("[Controller] Validator (pid=%d) exited with %d\n",
+                  validator_pid, WEXITSTATUS(status));
+  }
+  if (stats_pid > 0) {
+      waitpid(stats_pid, &status, 0);
+      log_message("[Controller] Statistics (pid=%d) exited with %d\n",
+                  stats_pid, WEXITSTATUS(status));
+  }
 
   // Remove as memórias partilhadas
   if (shm_pool_id != -1) {
@@ -91,10 +104,10 @@ void cleanup() {
     sem_close(log_sem);
     sem_unlink(LOG_SEM_NAME);
 
-  log_message("[Controller] Log fechado. A sair...\n");
+  
   close(log_fd);
 
-
+  exit(0);
 }
 
 void handle_sigint(int sig) {
@@ -127,9 +140,9 @@ int main() {
 
   // 1. Ler ficheiro de configuração
   Config cfg = read_config("config.cfg");
-  log_message("[Controller] Configuração lida: NUM_MINERS=%d, POOL=%d, "
-              "BLOCKCHAIN_BLOCKS=%d\n",
-              cfg.NUM_MINERS, cfg.TRANSACTION_POOL_SIZE, cfg.BLOCKCHAIN_BLOCKS);
+  log_message("[Controller] Configuração lida: NUM_MINERS=%d, TX_POOL_SIZE=%d, "
+              "TRANSACTIONS_PER_BLOCK=%d, BLOCKCHAIN_BLOCKS=%d\n",
+              cfg.NUM_MINERS, cfg.TX_POOL_SIZE, cfg.TRANSACTIONS_PER_BLOCK, cfg.BLOCKCHAIN_BLOCKS);
 
   if (cfg.NUM_MINERS <= 0 || cfg.NUM_MINERS > 100) {
     log_message("Erro: NUM_MINERS inválido: %d\n", cfg.NUM_MINERS);
@@ -137,7 +150,7 @@ int main() {
   }
 
   // Criar memórias partilhadas
-  shm_pool_id = create_transaction_pool(cfg.TRANSACTION_POOL_SIZE);
+  shm_pool_id = create_transaction_pool(cfg.TX_POOL_SIZE);
   shm_ledger_id = create_ledger(cfg.BLOCKCHAIN_BLOCKS);
   log_message("[Controller] Memórias partilhadas criadas com sucesso.\n");
 
