@@ -123,8 +123,16 @@ void handle_sigint(int sig) {
   cleanup();
 }
 
+void handle_sigusr1(int sig) {
+    // dump ledger to log file and to screen
+    //it should dump the ledger content in the log according to the defined format in this document
+    // POR IMPLEMENTAR---------------------------------------------------------------------
+    log_message("[Controller] SIGUSR1 received: dumped ledger.\n");
+  }
+
 int main() {
   signal(SIGINT, handle_sigint);
+  signal(SIGUSR1, handle_sigusr1);
 
     //Criar semáforo para o log
     sem_unlink(LOG_SEM_NAME); // Remove o semáforo se já existir
