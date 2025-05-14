@@ -24,10 +24,12 @@
 
 #define LOG_FILE "DEIChain_log.txt"
 #define LOG_SEM_NAME "/DEIChain_logsem"
+#define TX_POOL_SEM_NAME "/DEIChain_txpoolsem"
 
 pid_t miner_pid, validator_pid, stats_pid;
 int log_fd;
 sem_t *log_sem;  // semáforo para proteger o acesso ao log
+sem_t* txpool_sem; //semaforo para a transaction pool
 
 // Função auxiliar para escrever no log E no terminal
 void log_message(const char* format, ...) {
@@ -100,9 +102,15 @@ void cleanup() {
 
     log_message("[Controller] Log fechado. A sair...\n");
 
-    // Remove o semáforo
+    // Remove o semáforo log
     sem_close(log_sem);
     sem_unlink(LOG_SEM_NAME);
+
+    // Remove o semáforo transaction pool
+    if (txpool_sem != SEM_FAILED) {
+    sem_close(txpool_sem);
+    sem_unlink(TX_POOL_SEM_NAME);
+}
 
   
   close(log_fd);
@@ -128,6 +136,14 @@ int main() {
         perror("sem_open");
         exit(1);
     }
+
+    //Criar semaforo para a transaction pool
+    sem_unlink(TX_POOL_SEM_NAME);  // Garante que não existe
+txpool_sem = sem_open(TX_POOL_SEM_NAME, O_CREAT | O_EXCL, 0644, 1);
+if (txpool_sem == SEM_FAILED) {
+    perror("Erro ao criar semáforo do pool de transações");
+    exit(1);
+}
 
 
     log_fd = open(LOG_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
