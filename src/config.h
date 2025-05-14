@@ -6,10 +6,9 @@
 // 
 typedef struct {
     int NUM_MINERS;
-    int POOL_SIZE;
+    int TX_POOL_SIZE;
     int TRANSACTIONS_PER_BLOCK;
     int BLOCKCHAIN_BLOCKS;
-    int TRANSACTION_POOL_SIZE;
 } Config;
 
 Config read_config(const char *filename);
