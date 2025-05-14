@@ -91,8 +91,10 @@ void cleanup() {
     sem_close(log_sem);
     sem_unlink(LOG_SEM_NAME);
 
-    close(log_fd);
-    exit(0);
+  log_message("[Controller] Log fechado. A sair...\n");
+  close(log_fd);
+
+
 }
 
 void handle_sigint(int sig) {
@@ -165,8 +167,15 @@ int main() {
 
   log_message("[Controller] Processos filhos criados com sucesso.\n");
 
-  // Esperar sinais ou término manual
-  pause();
+  int status;
+  waitpid(miner_pid,    &status, 0);
+  log_message("[Controller] Miner (pid=%d) exited with %d\n", miner_pid, WEXITSTATUS(status));
+
+  waitpid(validator_pid, &status, 0);
+  log_message("[Controller] Validator (pid=%d) exited with %d\n", validator_pid, WEXITSTATUS(status));
+
+  waitpid(stats_pid,     &status, 0);
+  log_message("[Controller] Statistics (pid=%d) exited with %d\n", stats_pid,    WEXITSTATUS(status));
 
   return 0;
 }
