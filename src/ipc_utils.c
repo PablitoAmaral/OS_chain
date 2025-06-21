@@ -7,6 +7,8 @@
 #include <string.h>
 #include "ipc_utils.h"
 
+
+size_t transactions_per_block;
 int shm_pool_id;
 int shm_ledger_id;
 

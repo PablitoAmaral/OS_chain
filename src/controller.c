@@ -164,6 +164,8 @@ if (txpool_sem == SEM_FAILED) {
 
   // 1. Ler ficheiro de configuração
   Config cfg = read_config("config.cfg");
+  extern size_t transactions_per_block;
+  transactions_per_block = cfg.TRANSACTIONS_PER_BLOCK;
   log_message("[Controller] Configuração lida: NUM_MINERS=%d, TX_POOL_SIZE=%d, "
               "TRANSACTIONS_PER_BLOCK=%d, BLOCKCHAIN_BLOCKS=%d\n",
               cfg.NUM_MINERS, cfg.TX_POOL_SIZE, cfg.TRANSACTIONS_PER_BLOCK, cfg.BLOCKCHAIN_BLOCKS);
