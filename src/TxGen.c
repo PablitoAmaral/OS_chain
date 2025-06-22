@@ -14,7 +14,6 @@
 #include <fcntl.h>
 
 #include "ipc_utils.h"
-#include "config.h"
 
 volatile sig_atomic_t running = 1; //✅
 
@@ -22,6 +21,31 @@ volatile sig_atomic_t running = 1; //✅
 #define TX_POOL_SHM_FILE "config.cfg"
 #define TX_POOL_SHM_ID 'T'
 
+
+int read_tx_pool_size(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Erro ao abrir config.cfg");
+        exit(1);
+    }
+
+    char line[128];
+    char key[64];
+    int value;
+
+    while (fgets(line, sizeof(line), file)) {
+        if (sscanf(line, "%[^=]=%d", key, &value) == 2) {
+            if (strcmp(key, "TX_POOL_SIZE") == 0) {
+                fclose(file);
+                return value;
+            }
+        }
+    }
+
+    fclose(file);
+    fprintf(stderr, "Erro: TX_POOL_SIZE não encontrado em config.cfg\n");
+    exit(1);
+}
 
 void handle_sigint(int sig) {
     running = 0;
@@ -139,27 +163,3 @@ int main(int argc, char* argv[]) {
 }
 
 
-int read_tx_pool_size(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (!file) {
-        perror("Erro ao abrir config.cfg");
-        exit(1);
-    }
-
-    char line[128];
-    char key[64];
-    int value;
-
-    while (fgets(line, sizeof(line), file)) {
-        if (sscanf(line, "%[^=]=%d", key, &value) == 2) {
-            if (strcmp(key, "TX_POOL_SIZE") == 0) {
-                fclose(file);
-                return value;
-            }
-        }
-    }
-
-    fclose(file);
-    fprintf(stderr, "Erro: TX_POOL_SIZE não encontrado em config.cfg\n");
-    exit(1);
-}

@@ -19,8 +19,6 @@
 #include <sys/wait.h> // Para wait()
 #include <unistd.h>
 #include <semaphore.h>  // POSIX semaphores
-#include "ipc_utils.h"
-#include "config.h"
 #include "log.h"
 
 #define LOG_FILE "DEIChain_log.log"
