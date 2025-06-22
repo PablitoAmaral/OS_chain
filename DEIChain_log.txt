@@ -2,18 +2,8 @@
 [Controller] Configuração lida: NUM_MINERS=3, TX_POOL_SIZE=10, TRANSACTIONS_PER_BLOCK=5, BLOCKCHAIN_BLOCKS=100
 [Controller] Memórias partilhadas criadas com sucesso.
 [Controller] Processos filhos criados com sucesso.
-[Controller] Miner (pid=39626) exited with 0
+[Controller] Miner (pid=680) exited with 0
 [Controller] Sinal SIGINT recebido. Limpando recursos...
 [Controller] Encerrando sistema...
-[Controller] Miner (pid=39626) exited with 127
-[Controller] Memória partilhada do pool de transações removida.
-[Controller] Memória partilhada do ledger removida.
-[Controller] Log fechado. A sair...
 [Controller] Sinal SIGINT recebido. Limpando recursos...
 [Controller] Encerrando sistema...
-[Controller] Miner (pid=39626) exited with 0
-[Controller] Validator (pid=39627) exited with 0
-[Controller] Statistics (pid=39629) exited with 0
-[Controller] Memória partilhada do pool de transações removida.
-[Controller] Memória partilhada do ledger removida.
-[Controller] Log fechado. A sair...

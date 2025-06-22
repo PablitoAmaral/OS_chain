@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define TX_ID_LEN 64
-#define TXB_ID_LEN 64
+#define TX_ID_LEN 64 //???
+#define TXB_ID_LEN 64 // ???
 #define HASH_SIZE 65  // SHA256_DIGEST_LENGTH * 2 + 1
 
 extern size_t transactions_per_block;
@@ -18,12 +18,13 @@ extern size_t transactions_per_block;
 // IDs de memória partilhada
 extern int shm_pool_id;
 extern int shm_ledger_id;
+extern Config cfg;
 
-// Estrutura da transação
+// ✅
 typedef struct {
-    char TX_ID[TX_ID_LEN];     // ex: TX-<PID>-<número>
-    int reward;                // de 1 a 3, ou mais com aging
-    float value;               // valor da transação
+    char TX_ID[TX_ID_LEN];     // ex: TX-<PID>-<#>
+    int reward;                // 1-3 or more with aging
+    float value;               // transaction value
     time_t timestamp;          // timestamp da criação
 } Transaction;
 
@@ -46,7 +47,7 @@ static inline size_t get_transaction_block_size() {
          transactions_per_block * sizeof(Transaction);
 }
 
-// Entrada na pool de transações
+// Entrada na pool de transações ✅
 typedef struct {
     int empty;        // 1 = slot livre, 0 = ocupado
     int age;          // idade da transação
@@ -54,8 +55,8 @@ typedef struct {
 } TransactionSlot;
 
 typedef struct {
-    int size;  // campo fixo obrigatório
-    TransactionSlot transactions_pending_set[];  // array flexível
+    int size;  // campo fixo obrigatório ❌ 
+    TransactionSlot transactions_pending_set[]; 
 } TransactionPool;
 
 typedef struct {

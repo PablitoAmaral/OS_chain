@@ -7,7 +7,7 @@
 #include "validator.h"
 #include <fcntl.h>
 #include <signal.h>
-#include <stdarg.h>
+#include <stdarg.h> // for var_star, var_end...
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,40 +21,40 @@
 #include <semaphore.h>  // POSIX semaphores
 #include "ipc_utils.h"
 #include "config.h"
+#include "log.h"
 
-#define LOG_FILE "DEIChain_log.txt"
-#define LOG_SEM_NAME "/DEIChain_logsem"
-#define TX_POOL_SEM_NAME "/DEIChain_txpoolsem"
+#define LOG_FILE "DEIChain_log.log"
+#define LOG_SEMAPHORE "DEIChain_logsem"
+#define TX_POOL_SEMAPHORE "DEIChain_txpoolsem"
 
-pid_t miner_pid, validator_pid, stats_pid;
-int log_fd;
-sem_t *log_sem;  // semáforo para proteger o acesso ao log
-sem_t* txpool_sem; //semaforo para a transaction pool
+pid_t miner_pid, validator_pid, stats_pid;  //✅
+int log_fd; //✅
+sem_t *log_sem, *txpool_sem; //✅
 
-// Função auxiliar para escrever no log E no terminal
+// Logs a formatted message to file and terminal with semaphore protection //✅
 void log_message(const char* format, ...) {
-    va_list args;
-    va_start(args, format);
+  va_list args;
+  va_start(args, format);
     
-    // Adquire o semáforo para garantir acesso exclusivo ao log
-    if (sem_wait(log_sem) == -1) {
-        perror("sem_wait");
-    }
 
-    // Log no ficheiro
-    vdprintf(log_fd, format, args);
-    
-    // Reutiliza a lista de argumentos para imprimir no ecrã
-    va_end(args);
-    va_start(args, format);
-    vprintf(format, args);
+  if (sem_wait(log_sem) == -1) {
+    perror("sem_wait");
+  }
 
-    // Liberta o semáforo
-    if (sem_post(log_sem) == -1) {
-        perror("sem_post");
-    }
+  // Log in the txt (DEIChain_log.txt)
+  vdprintf(log_fd, format, args);
+  va_end(args);
 
-    va_end(args);
+  //A va_list can only be used once, so we must reinitialize it with va_start before using it a second time.
+  va_start(args, format);
+  vprintf(format, args); //stdout
+  
+
+  if (sem_post(log_sem) == -1) {
+    perror("sem_post");
+  }
+
+  va_end(args);
 }
 
 void cleanup() {
@@ -104,12 +104,12 @@ void cleanup() {
 
     // Remove o semáforo log
     sem_close(log_sem);
-    sem_unlink(LOG_SEM_NAME);
+    sem_unlink(LOG_SEMAPHORE);
 
     // Remove o semáforo transaction pool
     if (txpool_sem != SEM_FAILED) {
     sem_close(txpool_sem);
-    sem_unlink(TX_POOL_SEM_NAME);
+    sem_unlink(TX_POOL_SEMAPHORE);
 }
 
   
@@ -134,87 +134,78 @@ int main() {
   signal(SIGINT, handle_sigint);
   signal(SIGUSR1, handle_sigusr1);
 
-    //Criar semáforo para o log
-    sem_unlink(LOG_SEM_NAME); // Remove o semáforo se já existir
-    log_sem = sem_open(LOG_SEM_NAME,        
-                       O_CREAT | O_EXCL, 
-                       0644,    
-                       1);
-    if (log_sem == SEM_FAILED) {
-        perror("sem_open");
-        exit(1);
-    }
-
-    //Criar semaforo para a transaction pool
-    sem_unlink(TX_POOL_SEM_NAME);  // Garante que não existe
-txpool_sem = sem_open(TX_POOL_SEM_NAME, O_CREAT | O_EXCL, 0644, 1);
-if (txpool_sem == SEM_FAILED) {
-    perror("Erro ao criar semáforo do pool de transações");
+  //log_message function semaphore //✅
+  sem_unlink(LOG_SEMAPHORE);
+  log_sem = sem_open(LOG_SEMAPHORE, O_CREAT | O_EXCL, 0600, 1);
+  if (log_sem == SEM_FAILED) {
+    perror("sem_open (LOG_SEMAPHORE)");
     exit(1);
-}
+  }
 
+  //Transaction pool semaphore //✅
+  sem_unlink(TX_POOL_SEMAPHORE);
+  txpool_sem = sem_open(TX_POOL_SEMAPHORE, O_CREAT | O_EXCL, 0600, 1);
+  if (txpool_sem == SEM_FAILED) {
+    perror("sem_open (TX_POOL_SEMAPHORE)");
+    exit(1);
+  }
 
-    log_fd = open(LOG_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    if (log_fd == -1) {
-        perror("Erro ao criar log");
-        exit(1);
-    }
+  //open DEIChain_log.txt //✅
+  log_fd = open(LOG_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+  if (log_fd == -1) {
+    perror("open");
+    exit(1);
+  }
 
-  log_message("[Controller] Iniciando DEIChain...\n");
+  log_message("[Controller] Iniciando DEIChain...\n"); //✅
 
-  // 1. Ler ficheiro de configuração
+  // reads the config file and check everything
   Config cfg = read_config("config.cfg");
-  extern size_t transactions_per_block;
-  transactions_per_block = cfg.TRANSACTIONS_PER_BLOCK;
-  log_message("[Controller] Configuração lida: NUM_MINERS=%d, TX_POOL_SIZE=%d, "
-              "TRANSACTIONS_PER_BLOCK=%d, BLOCKCHAIN_BLOCKS=%d\n",
-              cfg.NUM_MINERS, cfg.TX_POOL_SIZE, cfg.TRANSACTIONS_PER_BLOCK, cfg.BLOCKCHAIN_BLOCKS);
+  extern size_t transactions_per_block;    //🐸 need to check wtf is that shit
+  transactions_per_block = cfg.TRANSACTIONS_PER_BLOCK; //🐸 need to check wtf is that shit
 
-  if (cfg.NUM_MINERS <= 0 || cfg.NUM_MINERS > 100) {
-    log_message("Erro: NUM_MINERS inválido: %d\n", cfg.NUM_MINERS);
-    exit(1);
-  }
+  
 
-  // Criar memórias partilhadas
+  // shared memorys
   shm_pool_id = create_transaction_pool(cfg.TX_POOL_SIZE);
-  shm_ledger_id = create_ledger(cfg.BLOCKCHAIN_BLOCKS);
-  log_message("[Controller] Memórias partilhadas criadas com sucesso.\n");
+  // shm_ledger_id = create_ledger(cfg.BLOCKCHAIN_BLOCKS);
+  // log_message("[Controller] Memórias partilhadas criadas com sucesso.\n");
 
-  if ((miner_pid = fork()) == 0) {
-    run_miner(cfg.NUM_MINERS);
-    exit(0);
-  } else if (miner_pid < 0) {
-    log_message("Erro: falha ao criar processo Miner\n");
-    cleanup(); // Liberta recursos, encerra com segurança
-  }
+  // if ((miner_pid = fork()) == 0) {
+  //   run_miner(cfg.NUM_MINERS);
+  //   exit(0);
+  // } else if (miner_pid < 0) {
+  //   log_message("Erro: falha ao criar processo Miner\n");
+  //   cleanup(); // Liberta recursos, encerra com segurança
+  // }
 
-  if ((validator_pid = fork()) == 0) {
-    run_validator();
-    exit(0);
-  } else if (validator_pid < 0) {
-    log_message("Erro: falha ao criar processo Validator\n");
-    cleanup();
-  }
+  // if ((validator_pid = fork()) == 0) {
+  //   run_validator();
+  //   exit(0);
+  // } else if (validator_pid < 0) {
+  //   log_message("Erro: falha ao criar processo Validator\n");
+  //   cleanup();
+  // }
 
-  if ((stats_pid = fork()) == 0) {
-    run_statistics();
-    exit(0);
-  } else if (stats_pid < 0) {
-    log_message("Erro: falha ao criar processo Statistics\n");
-    cleanup();
-  }
+  // if ((stats_pid = fork()) == 0) {
+  //   run_statistics();
+  //   exit(0);
+  // } else if (stats_pid < 0) {
+  //   log_message("Erro: falha ao criar processo Statistics\n");
+  //   cleanup();
+  // }
 
-  log_message("[Controller] Processos filhos criados com sucesso.\n");
+  // log_message("[Controller] Processos filhos criados com sucesso.\n");
 
-  int status;
-  waitpid(miner_pid,    &status, 0);
-  log_message("[Controller] Miner (pid=%d) exited with %d\n", miner_pid, WEXITSTATUS(status));
+  // int status;
+  // waitpid(miner_pid,    &status, 0);
+  // log_message("[Controller] Miner (pid=%d) exited with %d\n", miner_pid, WEXITSTATUS(status));
 
-  waitpid(validator_pid, &status, 0);
-  log_message("[Controller] Validator (pid=%d) exited with %d\n", validator_pid, WEXITSTATUS(status));
+  // waitpid(validator_pid, &status, 0);
+  // log_message("[Controller] Validator (pid=%d) exited with %d\n", validator_pid, WEXITSTATUS(status));
 
-  waitpid(stats_pid,     &status, 0);
-  log_message("[Controller] Statistics (pid=%d) exited with %d\n", stats_pid,    WEXITSTATUS(status));
-
+  // waitpid(stats_pid,     &status, 0);
+  // log_message("[Controller] Statistics (pid=%d) exited with %d\n", stats_pid,    WEXITSTATUS(status));
+  sleep(60);
   return 0;
 }

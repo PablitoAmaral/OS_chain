@@ -16,9 +16,9 @@
 #include "ipc_utils.h"
 #include "config.h"
 
-volatile sig_atomic_t running = 1;
+volatile sig_atomic_t running = 1; //✅
 
-#define TX_POOL_SEM_NAME "/DEIChain_txpoolsem"
+#define TX_POOL_SEMAPHORE "DEIChain_txpoolsem"
 #define TX_POOL_SHM_FILE "config.cfg"
 #define TX_POOL_SHM_ID 'T'
 
@@ -33,50 +33,56 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
+    // TX_POOL_SIZE
+    int tx_pool_size = read_tx_pool_size("config.cfg");
+
     int reward = atoi(argv[1]);
     int sleep_time = atoi(argv[2]);
 
     // Validar reward: 1 a 3
+    //✅
     if (reward < 1 || reward > 3) {
         fprintf(stderr, "Erro: reward deve estar entre 1 e 3.\n");
         exit(1);
     }
-
+    
     // Validar sleep time: 200 a 3000
+    //✅
     if (sleep_time < 200 || sleep_time > 3000) {
         fprintf(stderr, "Erro: sleep_time deve estar entre 200 e 3000 (ms).\n");
         exit(1);
     }
-
-    signal(SIGINT, handle_sigint);
-
     printf("[TxGen] Parâmetros válidos. Reward: %d | Sleep time: %d ms\n", reward, sleep_time);
 
-    // Aceder à memória partilhada
+    signal(SIGINT, handle_sigint); //🐸 need to check wtf is that shit
+
+
+    // Just attach to the shared memory we don’t need to create it again
+    //✅
     key_t key = ftok(TX_POOL_SHM_FILE, TX_POOL_SHM_ID);
     if (key == -1) {
         perror("Erro no ftok");
         exit(1);
     }
 
-    // Obter TX_POOL_SIZE
-    Config cfg = read_config("config.cfg");
-
-    int shm_id = shmget(key, sizeof(TransactionSlot) * cfg.TX_POOL_SIZE, 0666);
+    int shm_id = shmget(key,0,0);
     if (shm_id == -1) {
-        perror("Erro ao obter memória partilhada");
+        perror("shmget Txgen");
         exit(1);
     }
 
     TransactionPool* pool = (TransactionPool*) shmat(shm_id, NULL, 0);
     if (pool == (void*)-1) {
-        perror("Erro ao mapear memória");
+        perror("shmat TxGen");
         exit(1);
     }
 
-    sem_t* sem = sem_open(TX_POOL_SEM_NAME, 0);
+
+    // Just open the semaphore we don’t need to create it again
+    //✅
+    sem_t* sem = sem_open(TX_POOL_SEMAPHORE, 0);
     if (sem == SEM_FAILED) {
-        perror("Erro ao abrir semáforo do pool");
+        perror("sem_open TxGen");
         shmdt(pool);
         exit(1);
     }
@@ -100,7 +106,7 @@ int main(int argc, char* argv[]) {
             break;
         }
 
-        for (int i = 0; i < cfg.TX_POOL_SIZE; i++) {
+        for (int i = 0; i < tx_pool_size; i++) {
             if (pool->transactions_pending_set[i].empty) {
                 pool->transactions_pending_set[i].tx = tx;
                 pool->transactions_pending_set[i].empty = 0;
@@ -130,4 +136,30 @@ int main(int argc, char* argv[]) {
 
 
     return 0;
+}
+
+
+int read_tx_pool_size(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Erro ao abrir config.cfg");
+        exit(1);
+    }
+
+    char line[128];
+    char key[64];
+    int value;
+
+    while (fgets(line, sizeof(line), file)) {
+        if (sscanf(line, "%[^=]=%d", key, &value) == 2) {
+            if (strcmp(key, "TX_POOL_SIZE") == 0) {
+                fclose(file);
+                return value;
+            }
+        }
+    }
+
+    fclose(file);
+    fprintf(stderr, "Erro: TX_POOL_SIZE não encontrado em config.cfg\n");
+    exit(1);
 }
