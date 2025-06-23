@@ -21,32 +21,6 @@ volatile sig_atomic_t running = 1; //✅
 #define TX_POOL_SHM_FILE "config.cfg"
 #define TX_POOL_SHM_ID 'T'
 
-
-int read_tx_pool_size(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (!file) {
-        perror("Erro ao abrir config.cfg");
-        exit(1);
-    }
-
-    char line[128];
-    char key[64];
-    int value;
-
-    while (fgets(line, sizeof(line), file)) {
-        if (sscanf(line, "%[^=]=%d", key, &value) == 2) {
-            if (strcmp(key, "TX_POOL_SIZE") == 0) {
-                fclose(file);
-                return value;
-            }
-        }
-    }
-
-    fclose(file);
-    fprintf(stderr, "Erro: TX_POOL_SIZE não encontrado em config.cfg\n");
-    exit(1);
-}
-
 void handle_sigint(int sig) {
     running = 0;
 }
@@ -56,9 +30,8 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "Uso: %s <reward> <sleep_time_ms>\n", argv[0]);
         exit(1);
     }
+    srand(time(NULL)^getpid());
 
-    // TX_POOL_SIZE
-    int tx_pool_size = read_tx_pool_size("config.cfg");
 
     int reward = atoi(argv[1]);
     int sleep_time = atoi(argv[2]);
@@ -106,7 +79,21 @@ int main(int argc, char* argv[]) {
     //✅
     sem_t* sem = sem_open(TX_POOL_SEMAPHORE, 0);
     if (sem == SEM_FAILED) {
-        perror("sem_open TxGen");
+        perror("sem_open TxGen(TX_POOL_SEMAPHORE)");
+        shmdt(pool);
+        exit(1);
+    }
+    //✅
+    sem_t* empty = sem_open("empty", 0);
+    if (empty == SEM_FAILED) {
+        perror("sem_open TxGen(empty)");
+        shmdt(pool);
+        exit(1);
+    }
+    //✅
+    sem_t* full = sem_open("full", 0);
+    if (full == SEM_FAILED) {
+        perror("sem_open TxGen(full)");
         shmdt(pool);
         exit(1);
     }
@@ -123,19 +110,22 @@ int main(int argc, char* argv[]) {
         tx.value = ((float)(rand() % 10000)) / 100.0f;  // entre 0.00 e 99.99
         tx.timestamp = time(NULL);
 
-        bool inserted = false;
+
+        if (sem_wait(empty) == -1) {
+            perror("sem_wait");
+            break;
+        }
 
         if (sem_wait(sem) == -1) {
             perror("sem_wait");
             break;
         }
 
-        for (int i = 0; i < tx_pool_size; i++) {
+        for (int i = 0; i < pool->size; i++) {
             if (pool->transactions_pending_set[i].empty) {
                 pool->transactions_pending_set[i].tx = tx;
                 pool->transactions_pending_set[i].empty = 0;
                 pool->transactions_pending_set[i].age = 0;
-                inserted = true;
                 printf("[TxGen] Transação %s inserida na posição %d\n", tx.TX_ID, i);
                 break;
             }
@@ -146,14 +136,19 @@ int main(int argc, char* argv[]) {
             break;
         }
 
-        if (!inserted) {
-            printf("[TxGen] Pool cheia. Transação descartada: %s\n", tx.TX_ID);
+        if (sem_post(full) == -1) {
+            perror("sem_post");
+            break;
         }
 
+
         usleep(sleep_time * 1000);  // sleep em milissegundos
+
     }
 
     sem_close(sem);
+    sem_close(full);
+    sem_close(empty);
     shmdt(pool);
 
     printf("[TxGen] Finalizado com sucesso.\n");

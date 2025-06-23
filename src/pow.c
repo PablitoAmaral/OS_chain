@@ -30,6 +30,8 @@ unsigned char *serialize_block(const TransactionBlock *block, size_t *sz_buf) {
   // the pointer
   *sz_buf = get_transaction_block_size() - sizeof(Transaction *);
 
+  
+
   unsigned char *buffer = malloc(*sz_buf);
   if (!buffer) return NULL;
   
@@ -46,7 +48,7 @@ unsigned char *serialize_block(const TransactionBlock *block, size_t *sz_buf) {
   memcpy(p, &block->timestamp, sizeof(time_t));
   p += sizeof(time_t);
 
-  for (size_t i = 0; i < transactions_per_block; ++i) {
+  for (size_t i = 0; i < cfg.TRANSACTIONS_PER_BLOCK; ++i) {
     memcpy(p, &block->transactions[i], sizeof(Transaction));
     p += sizeof(Transaction);
   }
@@ -111,7 +113,7 @@ int check_difficulty(const char *hash, const int reward) {
 /* Function to verify a nonce */
 int verify_nonce(const TransactionBlock *block) {
   char hash[SHA256_DIGEST_LENGTH * 2 + 1];
-  int reward = get_max_transaction_reward(block, transactions_per_block);
+  int reward = get_max_transaction_reward(block, cfg.TRANSACTIONS_PER_BLOCK);
   compute_sha256(block, hash);
   return check_difficulty(hash, reward);
 }
@@ -126,7 +128,7 @@ PoWResult proof_of_work(TransactionBlock *block) {
 
   block->nonce = 0;
 
-  int reward = get_max_transaction_reward(block, transactions_per_block);
+  int reward = get_max_transaction_reward(block, cfg.TRANSACTIONS_PER_BLOCK);
 
   char hash[SHA256_DIGEST_LENGTH * 2 + 1];
   clock_t start = clock();
