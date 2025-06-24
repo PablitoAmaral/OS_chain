@@ -21,15 +21,10 @@ int total_chain_blocks;
 
 void statistic_handle_sigusr1(int sig);
 void print_statiscts(void);
-static void handle_sigterm(int signo);
 void log_statiscts(void);
 
 void run_statistics(void) {
   signal(SIGUSR1, statistic_handle_sigusr1);
-  struct sigaction sa = {.sa_handler = handle_sigterm};
-  sigemptyset(&sa.sa_mask);
-  sa.sa_flags = 0;
-  sigaction(SIGTERM, &sa, NULL);
   key_t key = ftok(BLOCK_MSG_QUEUE_FILE, BLOCK_MSG_QUEUE_ID);
   int msqid = msgget(key, IPC_CREAT | 0666);
   if (msqid < 0) {
