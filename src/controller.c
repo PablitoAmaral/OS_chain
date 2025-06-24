@@ -29,6 +29,7 @@
 #define TX_POOL_SEMAPHORE "DEIChain_txpoolsem"
 #define HASH_SIZE 65
 
+
 static pid_t validators[3];
 static int n_validators;
 
@@ -78,7 +79,14 @@ int main() {
 
 void init_ipc(void) {
 
-  // --------------     1) Log file -------------------
+  // --------------   2) Semáforos and Log file----------------
+  // log_message function semaphore
+  sem_unlink(LOG_SEMAPHORE);
+  log_sem = sem_open(LOG_SEMAPHORE, O_CREAT | O_EXCL, 0600, 1);
+  if (log_sem == SEM_FAILED)
+    perror("sem_open LOG"), exit(1);
+
+
   log_fd = open(LOG_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0600);
   if (log_fd == -1)
     perror("open log"), exit(1);
@@ -86,14 +94,9 @@ void init_ipc(void) {
   // reads the config file and check everything
   cfg = read_config("config.cfg");
 
-  // --------------   2) Semáforos ----------------
+  
 
-  // log_message function semaphore
-  sem_unlink(LOG_SEMAPHORE);
-  log_sem = sem_open(LOG_SEMAPHORE, O_CREAT | O_EXCL, 0600, 1);
-  if (log_sem == SEM_FAILED)
-    perror("sem_open LOG"), exit(1);
-
+  
   // Transaction pool semaphore
   sem_unlink(TX_POOL_SEMAPHORE);
   txpool_sem = sem_open(TX_POOL_SEMAPHORE, O_CREAT | O_EXCL, 0600, 1);
@@ -122,7 +125,7 @@ void init_ipc(void) {
   log_message("[Controller] Semáforos criados com sucesso\n");
 
   // 3) ---------------   Named pipe. -------------------
-  if (mkfifo("/tmp/VALIDATOR_INPUT", 0600) < 0 && errno != EEXIST)
+  if (mkfifo(VALIDATOR_FIFO, 0600) < 0 && errno != EEXIST)
     perror("mkfifo"), exit(1);
 
   log_message("[Controller] NAMED PIPE criado\n");
@@ -308,7 +311,7 @@ void log_message(const char *format, ...) {
     perror("sem_wait");
   }
 
-  // Log in the txt (DEIChain_log.txt)
+  // Log in the txt (DEIChain_log.log)
   vdprintf(log_fd, format, args);
   va_end(args);
 

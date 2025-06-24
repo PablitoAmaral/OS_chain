@@ -1,175 +1,41 @@
+[Controller] Configuração lida: NUM_MINERS=3, TX_POOL_SIZE=10, TRANSACTIONS_PER_BLOCK=5, BLOCKCHAIN_BLOCKS=100
+[Controller] Semáforos criados com sucesso
 [Controller] NAMED PIPE criado
-[Controller] Iniciando DEIChain...
 [Controller] Memórias partilhadas criadas com sucesso.
+[Controller] IPCs inicializados com sucesso.
+[Controller] Iniciando DEIChain...
 [Miner] Genesis hash: 00006a8e76f31ba74e21a092cca1015a418c9d5f4375e7a4fec676e1d2ec1436
 [Miner] Processo miner iniciado com 3 threads
 [Statistics] Processo iniciado!
-[Miner Thread 3] Starting block mining…
-[Miner Thread 2] Starting block mining…
 [Miner Thread 1] Starting block mining…
+[Miner Thread 2] Starting block mining…
+[Miner Thread 3] Starting block mining…
 [Validator] Inserido bloco MINER-3-BLOCK-0 na ledger (idx=0)
 [Validator] Sent block MINER-3-BLOCK-0 to stats
 [Statistics] Got block MINER-3-BLOCK-0
-[Validator] Bloco MINER-2-BLOCK-0 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-0 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-0 tem previous_hash errado
-[Validator] Inserido bloco MINER-1-BLOCK-1 na ledger (idx=1)
-[Validator] Sent block MINER-1-BLOCK-1 to stats
-[Statistics] Got block MINER-1-BLOCK-1
-[Validator] Bloco MINER-3-BLOCK-1 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-1 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-1 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-1 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-1 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-1 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-1 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-1 tem previous_hash errado
+[Validator] Inserido bloco MINER-2-BLOCK-1 na ledger (idx=1)
+[Validator] Sent block MINER-2-BLOCK-1 to stats
+[Statistics] Got block MINER-2-BLOCK-1
 [Validator] Inserido bloco MINER-2-BLOCK-2 na ledger (idx=2)
 [Validator] Sent block MINER-2-BLOCK-2 to stats
 [Statistics] Got block MINER-2-BLOCK-2
-[Validator] Bloco MINER-2-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-2 tem previous_hash errado
-[Validator] Inserido bloco MINER-2-BLOCK-3 na ledger (idx=3)
-[Validator] Sent block MINER-2-BLOCK-3 to stats
-[Statistics] Got block MINER-2-BLOCK-3
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-2 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-3-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-1-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
-[Validator] Bloco MINER-2-BLOCK-3 tem previous_hash errado
+[Validator] Inserido bloco MINER-1-BLOCK-3 na ledger (idx=3)
+[Validator] Sent block MINER-1-BLOCK-3 to stats
+[Statistics] Got block MINER-1-BLOCK-3
+[Validator] Inserido bloco MINER-1-BLOCK-4 na ledger (idx=4)
+[Validator] Sent block MINER-1-BLOCK-4 to stats
+[Statistics] Got block MINER-1-BLOCK-4
+[Validator] Inserido bloco MINER-2-BLOCK-5 na ledger (idx=5)
+[Validator] Sent block MINER-2-BLOCK-5 to stats
+[Statistics] Got block MINER-2-BLOCK-5
+[Validator] Inserido bloco MINER-3-BLOCK-6 na ledger (idx=6)
+[Validator] Sent block MINER-3-BLOCK-6 to stats
+[Statistics] Got block MINER-3-BLOCK-6
+[Validator] Inserido bloco MINER-1-BLOCK-7 na ledger (idx=7)
+[Validator] Sent block MINER-1-BLOCK-7 to stats
+[Statistics] Got block MINER-1-BLOCK-7
+[Validator] Inserido bloco MINER-2-BLOCK-8 na ledger (idx=8)
+[Validator] Sent block MINER-2-BLOCK-8 to stats
+[Statistics] Got block MINER-2-BLOCK-8
+[Controller] Sinal SIGINT recebido. Limpando recursos...
+[Controller] Encerrando sistema...

@@ -18,6 +18,8 @@
 #define HASH_SIZE 65  // SHA256_DIGEST_LENGTH * 2 + 1
 #define BLOCK_MSG_QUEUE_FILE "/tmp/DEIChain"
 #define BLOCK_MSG_QUEUE_ID   'B'
+#define VALIDATOR_FIFO "/tmp/VALIDATOR_INPUT"
+
 
 extern sem_t *empty, *full, *ledger_sem,*txpool_sem;
 extern Config cfg; 

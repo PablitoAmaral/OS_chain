@@ -10,7 +10,6 @@
 #include <sys/shm.h>
 #include <unistd.h>
 
-#define VALIDATOR_FIFO "/tmp/VALIDATOR_INPUT"
 
 bool validate_block(TransactionBlock *block, Ledger *ledger) {
   TransactionPool *pool = (TransactionPool *)shmat(shm_pool_id, NULL, 0);
