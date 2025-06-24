@@ -49,10 +49,14 @@ void handle_sigint(int sig);
 void handle_sigusr1(int sig);
 void initi_processes(void);
 void dump_ledger_contents(void);
+static void dump_pool_stats(void);
 
 int main() {
-  signal(SIGINT, handle_sigint);
   signal(SIGUSR1, handle_sigusr1);
+  sigset_t mask1;
+  sigemptyset(&mask1);
+  sigaddset(&mask1, SIGINT);
+  pthread_sigmask(SIG_BLOCK, &mask1, NULL);
 
   // mascara para bloquear sigurs2
   sigset_t mask;
@@ -71,6 +75,13 @@ int main() {
   // creating the control thread
   pthread_t monitor_ledger;
   pthread_create(&monitor_ledger, NULL, validator_spawner_thread, NULL);
+
+  sigset_t unblock;
+sigemptyset(&unblock);
+sigaddset(&unblock, SIGINT);
+pthread_sigmask(SIG_UNBLOCK, &unblock, NULL);
+
+  signal(SIGINT, handle_sigint);
 
   while (1) {
     pause();
@@ -184,6 +195,7 @@ void initi_processes(void) {
 }
 
 void *validator_spawner_thread(void *arg) {
+  (void)arg;
   // 1) preparar conjunto com SIGUSR2
   sigset_t mask;
   sigemptyset(&mask);
@@ -248,7 +260,10 @@ void kill_extra_validator() {
 }
 
 void handle_sigint(int sig) {
+  (void)sig;
   log_message("[Controller] Sinal SIGINT recebido. Limpando recursos...\n");
+  dump_pool_stats();
+  dump_ledger_contents();
   cleanup();
 }
 
@@ -311,6 +326,7 @@ void cleanup() {
 }
 
 void handle_sigusr1(int sig) {
+  (void)sig;
   log_message("[Controller] SIGUSR1 received: dumping ledger...\n");
   dump_ledger_contents();
 }
@@ -371,4 +387,29 @@ void log_message(const char *format, ...) {
   }
 
   va_end(args);
+}
+
+static void dump_pool_stats(void) {
+  // liga‐se à pool
+  TransactionPool *pool = (TransactionPool *)shmat(shm_pool_id, NULL, 0);
+  if (pool == (void *)-1) {
+    log_message("[Controller] Erro ao ligar ao pool de transações para "
+                "estatísticas finais\n");
+    return;
+  }
+
+  // protege o acesso
+  sem_wait(txpool_sem);
+  int unfinished = 0;
+  for (int i = 0; i < pool->size; ++i) {
+    if (!pool->transactions_pending_set[i].empty) {
+      ++unfinished;
+    }
+  }
+  sem_post(txpool_sem);
+
+  log_message("[Controller] Número de transações não finalizadas na pool: %d\n",
+              unfinished);
+
+  shmdt(pool);
 }

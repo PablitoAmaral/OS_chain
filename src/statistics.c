@@ -8,6 +8,7 @@
 #include <sys/msg.h>
 #include <sys/types.h>
 #include <time.h>
+#include <unistd.h>
 
 int max_miners;
 int *valid_blocks;
@@ -19,12 +20,41 @@ long long total_tx_count;
 int total_msgs;
 int total_chain_blocks;
 
+struct sigaction sig_int, sig_usr;
+sigset_t block_set;
+
 void statistic_handle_sigusr1(int sig);
 void print_statiscts(void);
 void log_statiscts(void);
 
+void termination_handler(int signum) {
+  if (signum == SIGINT) {
+    log_statiscts();
+    exit(0);
+  }
+  if (signum == SIGUSR1) {
+    print_statiscts();
+  }
+}
+
 void run_statistics(void) {
-  signal(SIGUSR1, statistic_handle_sigusr1);
+  sigfillset(&block_set); // will have all possible signals blocked when our
+                          // handler is called
+
+  // define a handler for SIGINT, SIGTSTP and SIGUSR1; when entered all possible
+  // signals are blocked
+
+  
+  sig_int.sa_flags = 0;
+  sig_int.sa_mask = block_set;
+  sig_int.sa_handler = &termination_handler;
+
+    sig_usr.sa_flags = SA_RESTART;
+    sig_usr.sa_mask = block_set;
+    sig_usr.sa_handler = &termination_handler;
+
+  sigaction(SIGINT, &sig_int, NULL);
+  sigaction(SIGUSR1, &sig_usr, NULL);
   key_t key = ftok(BLOCK_MSG_QUEUE_FILE, BLOCK_MSG_QUEUE_ID);
   int msqid = msgget(key, IPC_CREAT | 0666);
   if (msqid < 0) {
@@ -77,10 +107,6 @@ void run_statistics(void) {
   free(credits_sum);
 }
 
-void statistic_handle_sigusr1(int sig) {
-  log_message("[Controller] SIGUSR1 received: printing the statistcs...\n");
-  log_statiscts();
-}
 
 void print_statiscts(void) {
   // print report

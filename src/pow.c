@@ -48,7 +48,7 @@ unsigned char *serialize_block(const TransactionBlock *block, size_t *sz_buf) {
   memcpy(p, &block->timestamp, sizeof(time_t));
   p += sizeof(time_t);
 
-  for (size_t i = 0; i < cfg.TRANSACTIONS_PER_BLOCK; ++i) {
+  for (size_t i = 0; (int) i < cfg.TRANSACTIONS_PER_BLOCK; ++i) {
     memcpy(p, &block->transactions[i], sizeof(Transaction));
     p += sizeof(Transaction);
   }

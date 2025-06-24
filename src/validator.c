@@ -187,6 +187,11 @@ void run_validator() {
                       blk->txb_id, sm.miner_id, sm.valid, sm.credits,
                       (long)sm.block_timestamp);
         }
+        if (ledger->current_block >= ledger->size) {
+          log_message("[Validator] Ledger cheia — sinalizando Controller para "
+                      "terminar.\n");
+          kill(getppid(), SIGINT);
+        }
       } else {
         log_message("[Validator] Ledger cheia, ignorando bloco %s\n",
                     blk->txb_id);
@@ -200,7 +205,7 @@ void run_validator() {
 
       else {
         // invalid case
-        
+
         sm.mtype = 1;
         sm.miner_id = miner_id;
         sm.valid = 0;

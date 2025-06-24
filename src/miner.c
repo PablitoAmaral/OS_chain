@@ -28,7 +28,7 @@ static pthread_mutex_t tx_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t tx_ready_cond = PTHREAD_COND_INITIALIZER;
 
 
-static void handle_sigterm(int _);
+static void handle_sigterm(int sig);
 void *miner_thread(void *arg);
 static void init_miner_ipc(void);
 void send_block_to_validator(TransactionBlock *block, size_t bytes);
@@ -163,6 +163,7 @@ void send_block_to_validator(TransactionBlock *block, size_t bytes) {
 }
 
 void *tx_monitor_thread(void *arg) {
+  (void)arg;
   while (1) {
     if (sem_wait(full) == -1) {
       perror("sem_wait");
@@ -176,7 +177,8 @@ void *tx_monitor_thread(void *arg) {
   return NULL;
 }
 
-static void handle_sigterm(int _) {
+static void handle_sigterm(int sig) {
+  (void)sig;
   /* desmonta tudo e sai */
   if (pool)
     shmdt(pool);
