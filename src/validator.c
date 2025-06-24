@@ -30,11 +30,13 @@ bool validate_block(TransactionBlock *block, Ledger *ledger) {
   }
 
   // Se passou, atualiza `previous_hash` para o hash deste bloco
+
   compute_sha256(block, ledger->previous_hash);
 
   // 3) Verifica todas as transações estão na pool, marca-as como empty e dá
   // sem_post(empty)
   sem_wait(txpool_sem);
+  int matches[cfg.TRANSACTIONS_PER_BLOCK];
   for (int t = 0; t < cfg.TRANSACTIONS_PER_BLOCK; t++) {
     bool ok = false;
     for (int i = 0; i < pool->size; i++) {
@@ -42,22 +44,26 @@ bool validate_block(TransactionBlock *block, Ledger *ledger) {
           strcmp(pool->transactions_pending_set[i].tx.TX_ID,
                  block->transactions[t].TX_ID) == 0) {
         ok = true;
-        pool->transactions_pending_set[i].empty = 1;
-        sem_post(empty); // liberta espaço na pool
-        if (kill(getppid(), SIGUSR2) == -1) {
-          perror("kill(SIGUSR2)");
-        }
-        sem_wait(full); // decrementa full
+        matches[t] = i; // anota o índice
         break;
       }
     }
     if (!ok) {
-      sem_post(txpool_sem);
       log_message("[Validator] Transação %s não encontrada\n",
                   block->transactions[t].TX_ID);
+      sem_post(ledger_sem);
+      sem_post(txpool_sem);
       return false;
     }
   }
+
+  for (int t = 0; t < cfg.TRANSACTIONS_PER_BLOCK; t++) {
+        int i = matches[t];
+        pool->transactions_pending_set[i].empty = 1;
+        sem_post(empty);        // libera uma vaga
+        kill(getppid(), SIGUSR2); // sinaliza controller
+        sem_wait(full);         // decrementa full
+    }
   sem_post(txpool_sem);
   sem_post(ledger_sem);
 

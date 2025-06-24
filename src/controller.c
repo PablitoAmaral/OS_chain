@@ -189,7 +189,7 @@ void *validator_spawner_thread(void *arg) {
   // 1) preparar conjunto com SIGUSR2
   sigset_t mask;
   sigemptyset(&mask);
-  sigaddset(&mask, SIGUSR1);
+  sigaddset(&mask, SIGUSR2);
 
   TransactionPool *pool = shmat(shm_pool_id, NULL, 0);
   if (pool == (void *)-1) {
@@ -212,7 +212,7 @@ void *validator_spawner_thread(void *arg) {
     sem_post(txpool_sem);
 
     float occ = (float)pend / pool->size;
-
+    
     if (occ >= 0.80f && n_validators < 3) {
       spawn_validator();
     } else if (occ >= 0.60f && n_validators < 2) {
