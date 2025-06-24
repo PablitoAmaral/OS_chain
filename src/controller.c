@@ -134,22 +134,20 @@ void init_ipc(void) {
   log_message("[Controller] Memórias partilhadas criadas com sucesso.\n");
 
   // 5) --------------- Message Queues ---------------
-  int fd = open(BLOCK_MSG_QUEUE_FILE, O_CREAT|O_RDONLY, 0600);
+  int fd = open(BLOCK_MSG_QUEUE_FILE, O_CREAT | O_RDONLY, 0600);
   if (fd < 0) {
-      perror("open key file for msg queue");
-      exit(1);
+    perror("open key file for msg queue");
+    exit(1);
   }
   close(fd);
-  
+
   key_t stats_key = ftok(BLOCK_MSG_QUEUE_FILE, BLOCK_MSG_QUEUE_ID);
-  if (stats_key == (key_t)-1)
-  {
+  if (stats_key == (key_t)-1) {
     perror("ftok stats queue");
     exit(1);
   }
   stats_msqid = msgget(stats_key, IPC_CREAT | 0600);
-  if (stats_msqid < 0)
-  {
+  if (stats_msqid < 0) {
     perror("msgget stats queue");
     exit(1);
   }
@@ -212,7 +210,7 @@ void *validator_spawner_thread(void *arg) {
     sem_post(txpool_sem);
 
     float occ = (float)pend / pool->size;
-    
+
     if (occ >= 0.80f && n_validators < 3) {
       spawn_validator();
     } else if (occ >= 0.60f && n_validators < 2) {
@@ -336,7 +334,7 @@ void dump_ledger_contents(void) {
     log_message("Previous Hash: %s\n", b->previous_block_hash);
     log_message("Block Timestamp: %ld\n", b->timestamp);
     log_message("Nonce: %u\n", b->nonce);
-    
+
     for (int t = 0; t < cfg.TRANSACTIONS_PER_BLOCK; t++) {
       Transaction *tx = &b->transactions[t];
       log_message("    Tx[%d] ID:%s  Reward:%d  Value:%.2f  Timestamp:%ld\n", t,

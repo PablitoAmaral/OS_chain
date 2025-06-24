@@ -36,6 +36,17 @@ bool validate_block(TransactionBlock *block, Ledger *ledger) {
   // 3) Verifica todas as transações estão na pool, marca-as como empty e dá
   // sem_post(empty)
   sem_wait(txpool_sem);
+
+  //increasing the age of each transaction each time it touches the Transactions Pool
+  for (int i = 0; i < pool->size; i++) {
+    if (!pool->transactions_pending_set[i].empty) {
+      pool->transactions_pending_set[i].age++;
+      if (pool->transactions_pending_set[i].age % 50 == 0) {
+        pool->transactions_pending_set[i].tx.reward++;
+      }
+    }
+  }
+
   int matches[cfg.TRANSACTIONS_PER_BLOCK];
   for (int t = 0; t < cfg.TRANSACTIONS_PER_BLOCK; t++) {
     bool ok = false;
@@ -58,12 +69,12 @@ bool validate_block(TransactionBlock *block, Ledger *ledger) {
   }
 
   for (int t = 0; t < cfg.TRANSACTIONS_PER_BLOCK; t++) {
-        int i = matches[t];
-        pool->transactions_pending_set[i].empty = 1;
-        sem_post(empty);        // libera uma vaga
-        kill(getppid(), SIGUSR2); // sinaliza controller
-        sem_wait(full);         // decrementa full
-    }
+    int i = matches[t];
+    pool->transactions_pending_set[i].empty = 1;
+    sem_post(empty);          // libera uma vaga
+    kill(getppid(), SIGUSR2); // sinaliza controller
+    sem_wait(full);           // decrementa full
+  }
   sem_post(txpool_sem);
   sem_post(ledger_sem);
 
