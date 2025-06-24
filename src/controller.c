@@ -29,9 +29,9 @@
 #define TX_POOL_SEMAPHORE "DEIChain_txpoolsem"
 #define HASH_SIZE 65
 
-
 static pid_t validators[3];
 static int n_validators;
+int stats_msqid;
 
 unsigned block_counter = 0;
 Config cfg;
@@ -48,6 +48,7 @@ void log_message(const char *format, ...);
 void handle_sigint(int sig);
 void handle_sigusr1(int sig);
 void initi_processes(void);
+void dump_ledger_contents(void);
 
 int main() {
   signal(SIGINT, handle_sigint);
@@ -86,7 +87,6 @@ void init_ipc(void) {
   if (log_sem == SEM_FAILED)
     perror("sem_open LOG"), exit(1);
 
-
   log_fd = open(LOG_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0600);
   if (log_fd == -1)
     perror("open log"), exit(1);
@@ -94,9 +94,6 @@ void init_ipc(void) {
   // reads the config file and check everything
   cfg = read_config("config.cfg");
 
-  
-
-  
   // Transaction pool semaphore
   sem_unlink(TX_POOL_SEMAPHORE);
   txpool_sem = sem_open(TX_POOL_SEMAPHORE, O_CREAT | O_EXCL, 0600, 1);
@@ -132,9 +129,31 @@ void init_ipc(void) {
 
   // 4) --------------- Shared memories ---------------
   shm_pool_id = create_transaction_pool(cfg.TX_POOL_SIZE);
-  shm_ledger_id = create_ledger(cfg.BLOCKCHAIN_BLOCKS, cfg.TX_POOL_SIZE);
+  shm_ledger_id =
+      create_ledger(cfg.BLOCKCHAIN_BLOCKS, cfg.TRANSACTIONS_PER_BLOCK);
   log_message("[Controller] Memórias partilhadas criadas com sucesso.\n");
 
+  // 5) --------------- Message Queues ---------------
+  int fd = open(BLOCK_MSG_QUEUE_FILE, O_CREAT|O_RDONLY, 0600);
+  if (fd < 0) {
+      perror("open key file for msg queue");
+      exit(1);
+  }
+  close(fd);
+  
+  key_t stats_key = ftok(BLOCK_MSG_QUEUE_FILE, BLOCK_MSG_QUEUE_ID);
+  if (stats_key == (key_t)-1)
+  {
+    perror("ftok stats queue");
+    exit(1);
+  }
+  stats_msqid = msgget(stats_key, IPC_CREAT | 0600);
+  if (stats_msqid < 0)
+  {
+    perror("msgget stats queue");
+    exit(1);
+  }
+  log_message("[Controller] Message Queue criado (msqid=%d)\n", stats_msqid);
   log_message("[Controller] IPCs inicializados com sucesso.\n");
 }
 
@@ -294,12 +313,41 @@ void cleanup() {
 }
 
 void handle_sigusr1(int sig) {
-  // dump ledger to log file and to screen
-  // it should dump the ledger content in the log according to the defined
-  // format in this document
-  // POR
-  // IMPLEMENTAR---------------------------------------------------------------------
-  log_message("[Controller] SIGUSR1 received: dumped ledger.\n");
+  log_message("[Controller] SIGUSR1 received: dumping ledger...\n");
+  dump_ledger_contents();
+}
+
+void dump_ledger_contents(void) {
+  // attach to ledger
+  Ledger *ledger = shmat(shm_ledger_id, NULL, 0);
+  if (ledger == (void *)-1) {
+    log_message("[Controller] Erro: não conseguiu ligar ao ledger\n");
+    return;
+  }
+
+  log_message("======== Start Legder ========\n");
+  sem_wait(ledger_sem);
+  int total = ledger->current_block;
+
+  for (int i = 0; i < total; i++) {
+    TransactionBlock *b = &ledger->blocks[i];
+    log_message("||---- Block %02d --\n", i);
+    log_message("Block ID: %s\n", b->txb_id);
+    log_message("Previous Hash: %s\n", b->previous_block_hash);
+    log_message("Block Timestamp: %ld\n", b->timestamp);
+    log_message("Nonce: %u\n", b->nonce);
+    
+    for (int t = 0; t < cfg.TRANSACTIONS_PER_BLOCK; t++) {
+      Transaction *tx = &b->transactions[t];
+      log_message("    Tx[%d] ID:%s  Reward:%d  Value:%.2f  Timestamp:%ld\n", t,
+                  tx->TX_ID, tx->reward, tx->value, tx->timestamp);
+    }
+    log_message("-----------------------------------\n");
+  }
+  sem_post(ledger_sem);
+  log_message("========= Ledger dump end =========\n");
+
+  shmdt(ledger);
 }
 
 // Logs a formatted message to file and terminal with semaphore protection

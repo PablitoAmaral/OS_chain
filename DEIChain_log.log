@@ -2,40 +2,471 @@
 [Controller] Sem√°foros criados com sucesso
 [Controller] NAMED PIPE criado
 [Controller] Mem√≥rias partilhadas criadas com sucesso.
+[Controller] Message Queue criado (msqid=0)
 [Controller] IPCs inicializados com sucesso.
 [Controller] Iniciando DEIChain...
 [Miner] Genesis hash: 00006a8e76f31ba74e21a092cca1015a418c9d5f4375e7a4fec676e1d2ec1436
 [Miner] Processo miner iniciado com 3 threads
 [Statistics] Processo iniciado!
-[Miner Thread 1] Starting block mining‚Ä¶
-[Miner Thread 2] Starting block mining‚Ä¶
 [Miner Thread 3] Starting block mining‚Ä¶
-[Validator] Inserido bloco MINER-3-BLOCK-0 na ledger (idx=0)
-[Validator] Sent block MINER-3-BLOCK-0 to stats
-[Statistics] Got block MINER-3-BLOCK-0
+[Miner Thread 2] Starting block mining‚Ä¶
+[Miner Thread 1] Starting block mining‚Ä¶
+[Validator] Inserido bloco MINER-1-BLOCK-0 na ledger (idx=0)
+[Validator] Sent block MINER-1-BLOCK-0 to stats
+[Statistics] Got block MINER-1-BLOCK-0
 [Validator] Inserido bloco MINER-2-BLOCK-1 na ledger (idx=1)
 [Validator] Sent block MINER-2-BLOCK-1 to stats
 [Statistics] Got block MINER-2-BLOCK-1
-[Validator] Inserido bloco MINER-2-BLOCK-2 na ledger (idx=2)
-[Validator] Sent block MINER-2-BLOCK-2 to stats
-[Statistics] Got block MINER-2-BLOCK-2
+[Validator] Inserido bloco MINER-1-BLOCK-2 na ledger (idx=2)
+[Validator] Sent block MINER-1-BLOCK-2 to stats
+[Statistics] Got block MINER-1-BLOCK-2
 [Validator] Inserido bloco MINER-1-BLOCK-3 na ledger (idx=3)
 [Validator] Sent block MINER-1-BLOCK-3 to stats
 [Statistics] Got block MINER-1-BLOCK-3
-[Validator] Inserido bloco MINER-1-BLOCK-4 na ledger (idx=4)
-[Validator] Sent block MINER-1-BLOCK-4 to stats
-[Statistics] Got block MINER-1-BLOCK-4
-[Validator] Inserido bloco MINER-2-BLOCK-5 na ledger (idx=5)
-[Validator] Sent block MINER-2-BLOCK-5 to stats
-[Statistics] Got block MINER-2-BLOCK-5
-[Validator] Inserido bloco MINER-3-BLOCK-6 na ledger (idx=6)
-[Validator] Sent block MINER-3-BLOCK-6 to stats
-[Statistics] Got block MINER-3-BLOCK-6
-[Validator] Inserido bloco MINER-1-BLOCK-7 na ledger (idx=7)
-[Validator] Sent block MINER-1-BLOCK-7 to stats
-[Statistics] Got block MINER-1-BLOCK-7
+[Validator] Inserido bloco MINER-2-BLOCK-4 na ledger (idx=4)
+[Validator] Sent block MINER-2-BLOCK-4 to stats
+[Statistics] Got block MINER-2-BLOCK-4
+[Validator] Inserido bloco MINER-3-BLOCK-5 na ledger (idx=5)
+[Validator] Sent block MINER-3-BLOCK-5 to stats
+[Statistics] Got block MINER-3-BLOCK-5
+[Validator] Inserido bloco MINER-1-BLOCK-6 na ledger (idx=6)
+[Validator] Sent block MINER-1-BLOCK-6 to stats
+[Statistics] Got block MINER-1-BLOCK-6
+[Validator] Inserido bloco MINER-3-BLOCK-7 na ledger (idx=7)
+[Validator] Sent block MINER-3-BLOCK-7 to stats
+[Statistics] Got block MINER-3-BLOCK-7
 [Validator] Inserido bloco MINER-2-BLOCK-8 na ledger (idx=8)
 [Validator] Sent block MINER-2-BLOCK-8 to stats
 [Statistics] Got block MINER-2-BLOCK-8
+[Validator] Inserido bloco MINER-1-BLOCK-9 na ledger (idx=9)
+[Validator] Sent block MINER-1-BLOCK-9 to stats
+[Statistics] Got block MINER-1-BLOCK-9
+[Validator] Inserido bloco MINER-1-BLOCK-10 na ledger (idx=10)
+[Validator] Sent block MINER-1-BLOCK-10 to stats
+[Statistics] Got block MINER-1-BLOCK-10
+[Validator] Inserido bloco MINER-2-BLOCK-11 na ledger (idx=11)
+[Validator] Sent block MINER-2-BLOCK-11 to stats
+[Statistics] Got block MINER-2-BLOCK-11
+[Validator] Inserido bloco MINER-2-BLOCK-12 na ledger (idx=12)
+[Validator] Sent block MINER-2-BLOCK-12 to stats
+[Statistics] Got block MINER-2-BLOCK-12
+[Validator] Inserido bloco MINER-1-BLOCK-13 na ledger (idx=13)
+[Validator] Sent block MINER-1-BLOCK-13 to stats
+[Statistics] Got block MINER-1-BLOCK-13
+[Validator] Inserido bloco MINER-2-BLOCK-14 na ledger (idx=14)
+[Validator] Sent block MINER-2-BLOCK-14 to stats
+[Statistics] Got block MINER-2-BLOCK-14
+[Validator] Inserido bloco MINER-1-BLOCK-15 na ledger (idx=15)
+[Validator] Sent block MINER-1-BLOCK-15 to stats
+[Statistics] Got block MINER-1-BLOCK-15
+[Validator] Inserido bloco MINER-2-BLOCK-16 na ledger (idx=16)
+[Validator] Sent block MINER-2-BLOCK-16 to stats
+[Statistics] Got block MINER-2-BLOCK-16
+[Validator] Inserido bloco MINER-2-BLOCK-17 na ledger (idx=17)
+[Validator] Sent block MINER-2-BLOCK-17 to stats
+[Statistics] Got block MINER-2-BLOCK-17
+[Validator] Inserido bloco MINER-1-BLOCK-18 na ledger (idx=18)
+[Validator] Sent block MINER-1-BLOCK-18 to stats
+[Statistics] Got block MINER-1-BLOCK-18
+[Validator] Inserido bloco MINER-1-BLOCK-19 na ledger (idx=19)
+[Validator] Sent block MINER-1-BLOCK-19 to stats
+[Statistics] Got block MINER-1-BLOCK-19
+[Validator] Inserido bloco MINER-2-BLOCK-20 na ledger (idx=20)
+[Validator] Sent block MINER-2-BLOCK-20 to stats
+[Statistics] Got block MINER-2-BLOCK-20
+[Validator] Inserido bloco MINER-1-BLOCK-21 na ledger (idx=21)
+[Validator] Sent block MINER-1-BLOCK-21 to stats
+[Statistics] Got block MINER-1-BLOCK-21
+[Validator] Inserido bloco MINER-3-BLOCK-22 na ledger (idx=22)
+[Validator] Sent block MINER-3-BLOCK-22 to stats
+[Statistics] Got block MINER-3-BLOCK-22
+[Validator] Inserido bloco MINER-3-BLOCK-23 na ledger (idx=23)
+[Validator] Sent block MINER-3-BLOCK-23 to stats
+[Statistics] Got block MINER-3-BLOCK-23
+[Validator] Inserido bloco MINER-2-BLOCK-24 na ledger (idx=24)
+[Validator] Sent block MINER-2-BLOCK-24 to stats
+[Statistics] Got block MINER-2-BLOCK-24
+[Validator] Inserido bloco MINER-1-BLOCK-25 na ledger (idx=25)
+[Validator] Sent block MINER-1-BLOCK-25 to stats
+[Statistics] Got block MINER-1-BLOCK-25
+[Validator] Inserido bloco MINER-1-BLOCK-26 na ledger (idx=26)
+[Validator] Sent block MINER-1-BLOCK-26 to stats
+[Statistics] Got block MINER-1-BLOCK-26
+[Validator] Bloco MINER-1-BLOCK-26 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-26 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-26 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-26 tem previous_hash errado
+[Validator] Inserido bloco MINER-1-BLOCK-27 na ledger (idx=27)
+[Validator] Sent block MINER-1-BLOCK-27 to stats
+[Statistics] Got block MINER-1-BLOCK-27
+[Validator] Bloco MINER-1-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-2-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-27 tem previous_hash errado
+[Validator] Bloco MINER-2-BLOCK-27 tem previous_hash errado
+[Validator] Inserido bloco MINER-3-BLOCK-28 na ledger (idx=28)
+[Validator] Sent block MINER-3-BLOCK-28 to stats
+[Statistics] Got block MINER-3-BLOCK-28
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-2-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-2-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-1-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Controller] SIGUSR1 received: dumping ledger...
+======== Start Legder ========
+||---- Block 00 --
+Block ID: MINER-1-BLOCK-0
+Previous Hash: 00006a8e76f31ba74e21a092cca1015a418c9d5f4375e7a4fec676e1d2ec1436
+Block Timestamp: 1750790080
+Nonce: 66363
+    Tx[0] ID:MINER-2-BLOCK-1  Reward:808464432  Value:854066011034261389312.00  Timestamp:3689071759390238308
+    Tx[1] ID:d2964af6402572efbf851b129ec5cb1c435d4eafac448f8e  Reward:306006  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-2  Reward:892429158  Value:16618561848174027210752.00  Timestamp:7306075774638043492
+    Tx[3] ID:e80d36fda85af9c5c3ac8dfae7538d6a65c61fa6  Reward:1162758477  Value:0.00  Timestamp:14405025087310914
+    Tx[4] ID:  Reward:1697931833  Value:1043235631994796769280.00  Timestamp:3473173859341318499
+-----------------------------------
+||---- Block 01 --
+Block ID: MINER-2-BLOCK-1
+Previous Hash: 0000029bdfa98723d2964af6402572efbf851b129ec5cb1c435d4eafac448f8e
+Block Timestamp: 1750790083
+Nonce: 306006
+    Tx[0] ID:MINER-1-BLOCK-2  Reward:808464432  Value:0.00  Timestamp:7233125390107108198
+    Tx[1] ID:d1c15edee80d36fda85af9c5c3ac8dfae7538d6a65c61fa6  Reward:399867  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-3  Reward:1684091746  Value:836538423497000484864.00  Timestamp:7089289470200275513
+    Tx[3] ID:c961913027f0e9adc9d1fa2cf56304f5af449385  Reward:1162758477  Value:0.00  Timestamp:14686500064021570
+    Tx[4] ID:  Reward:878798137  Value:209139074289505402880.00  Timestamp:7090412259731978040
+-----------------------------------
+||---- Block 02 --
+Block ID: MINER-1-BLOCK-2
+Previous Hash: 00000902fc1589add1c15edee80d36fda85af9c5c3ac8dfae7538d6a65c61fa6
+Block Timestamp: 1750790086
+Nonce: 399867
+    Tx[0] ID:MINER-1-BLOCK-3  Reward:808464432  Value:0.00  Timestamp:7076673673769333602
+    Tx[1] ID:9b4e67bbc961913027f0e9adc9d1fa2cf56304f5af449385  Reward:606020  Value:0.00  Timestamp:3256715311915616589
+    Tx[2] ID:BLOCK-4  Reward:925983587  Value:0.00  Timestamp:7004617169847805241
+    Tx[3] ID:87f4b4fbabbde2822a95594fa1f753e710c00423  Reward:1162758477  Value:0.00  Timestamp:14967975040732226
+    Tx[4] ID:  Reward:825570354  Value:0.00  Timestamp:7161624330096948016
+-----------------------------------
+||---- Block 03 --
+Block ID: MINER-1-BLOCK-3
+Previous Hash: 00000ba3b3ad6e5b9b4e67bbc961913027f0e9adc9d1fa2cf56304f5af449385
+Block Timestamp: 1750790089
+Nonce: 606020
+    Tx[0] ID:MINER-2-BLOCK-4  Reward:808464432  Value:0.00  Timestamp:3919650540382937955
+    Tx[1] ID:9ea44f5a87f4b4fbabbde2822a95594fa1f753e710c00423  Reward:509394  Value:0.00  Timestamp:3256996786892327245
+    Tx[2] ID:BLOCK-5  Reward:1664706096  Value:0.00  Timestamp:3703704042815697970
+    Tx[3] ID:039bb3cc0d6ff4705b41918d763fc2519cbfc2ab  Reward:1162758477  Value:0.00  Timestamp:15249450017442882
+    Tx[4] ID:  Reward:1633824819  Value:0.00  Timestamp:3474589119851553379
+-----------------------------------
+||---- Block 04 --
+Block ID: MINER-2-BLOCK-4
+Previous Hash: 00000255cc17fee69ea44f5a87f4b4fbabbde2822a95594fa1f753e710c00423
+Block Timestamp: 1750790092
+Nonce: 509394
+    Tx[0] ID:MINER-3-BLOCK-5  Reward:808464432  Value:0.00  Timestamp:3473510495422080560
+    Tx[1] ID:245143f3039bb3cc0d6ff4705b41918d763fc2519cbfc2ab  Reward:927602  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-6  Reward:1630679351  Value:0.00  Timestamp:3846417560532824115
+    Tx[3] ID:cb05e8808b25e96309e8b8e3c83471b63ca4085f  Reward:1162758477  Value:0.00  Timestamp:15530924994153538
+    Tx[4] ID:  Reward:1701143137  Value:0.00  Timestamp:4050760700533093938
+-----------------------------------
+||---- Block 05 --
+Block ID: MINER-3-BLOCK-5
+Previous Hash: 000006e50f9cdc40245143f3039bb3cc0d6ff4705b41918d763fc2519cbfc2ab
+Block Timestamp: 1750790095
+Nonce: 927602
+    Tx[0] ID:MINER-1-BLOCK-6  Reward:808464432  Value:1047846895800759091200.00  Timestamp:4134695211386417463
+    Tx[1] ID:30bad8a5cb05e8808b25e96309e8b8e3c83471b63ca4085f  Reward:136497  Value:0.00  Timestamp:3256996786892327245
+    Tx[2] ID:BLOCK-7  Reward:828465968  Value:0.00  Timestamp:4135493259330151009
+    Tx[3] ID:26c1e178c211131c29d802a670587467e2467286  Reward:1162758477  Value:0.00  Timestamp:15812399970864194
+    Tx[4] ID:  Reward:842425393  Value:0.00  Timestamp:7306305585486772272
+-----------------------------------
+||---- Block 06 --
+Block ID: MINER-1-BLOCK-6
+Previous Hash: 000007cb712acca930bad8a5cb05e8808b25e96309e8b8e3c83471b63ca4085f
+Block Timestamp: 1750790098
+Nonce: 136497
+    Tx[0] ID:MINER-3-BLOCK-7  Reward:808464432  Value:0.00  Timestamp:4134642442616005424
+    Tx[1] ID:abee59d926c1e178c211131c29d802a670587467e2467286  Reward:289133  Value:0.00  Timestamp:3256715311915616589
+    Tx[2] ID:BLOCK-8  Reward:842622257  Value:212396038837210447872.00  Timestamp:3558749923089736753
+    Tx[3] ID:08d386ee1e855f7b21c0665bfe1de84c9696696e  Reward:1162758477  Value:0.00  Timestamp:16093874947574850
+    Tx[4] ID:  Reward:929249081  Value:0.00  Timestamp:7234582235212493879
+-----------------------------------
+||---- Block 07 --
+Block ID: MINER-3-BLOCK-7
+Previous Hash: 00000a550ca1e3a9abee59d926c1e178c211131c29d802a670587467e2467286
+Block Timestamp: 1750790101
+Nonce: 289133
+    Tx[0] ID:MINER-2-BLOCK-8  Reward:808464432  Value:13592133891381799157760.00  Timestamp:7005412327171908913
+    Tx[1] ID:1d6238c108d386ee1e855f7b21c0665bfe1de84c9696696e  Reward:2714194  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-9  Reward:1680881465  Value:0.00  Timestamp:4134695214979954489
+    Tx[3] ID:741d6ffd45fdbb5704e82d778d638687ac87fd73  Reward:1162758477  Value:0.00  Timestamp:3472606588954430530
+    Tx[4] ID:  Reward:1701209700  Value:53834737412493853851648.00  Timestamp:3977352898445076025
+-----------------------------------
+||---- Block 08 --
+Block ID: MINER-2-BLOCK-8
+Previous Hash: 0000058d1e92e98a1d6238c108d386ee1e855f7b21c0665bfe1de84c9696696e
+Block Timestamp: 1750790104
+Nonce: 2714194
+    Tx[0] ID:MINER-1-BLOCK-9  Reward:808464432  Value:0.00  Timestamp:3691092658185320249
+    Tx[1] ID:97c7dca9741d6ffd45fdbb5704e82d778d638687ac87fd73  Reward:602727  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-10  Reward:909140785  Value:67411541050744083841024.00  Timestamp:7293129008913737316
+    Tx[3] ID:9f0bce27eb3bb820d89e35e916981345ae50736f  Reward:1162758477  Value:0.00  Timestamp:3544664182992358466
+    Tx[4] ID:  Reward:1681012024  Value:0.00  Timestamp:3919364663819723826
+-----------------------------------
+||---- Block 09 --
+Block ID: MINER-1-BLOCK-9
+Previous Hash: 00000c12970d7e9397c7dca9741d6ffd45fdbb5704e82d778d638687ac87fd73
+Block Timestamp: 1750790110
+Nonce: 602727
+    Tx[0] ID:MINER-1-BLOCK-10  Reward:808464432  Value:0.00  Timestamp:7306076857050358577
+    Tx[1] ID:dffe1f6e9f0bce27eb3bb820d89e35e916981345ae50736f  Reward:1092289  Value:0.00  Timestamp:3256715311915616589
+    Tx[2] ID:BLOCK-11  Reward:825714232  Value:0.00  Timestamp:3631368290371253560
+    Tx[3] ID:2d1dead69d9c8c2f709de83393dc95a2631a7286  Reward:1162758477  Value:0.00  Timestamp:3616721777030286402
+    Tx[4] ID:  Reward:859126065  Value:0.00  Timestamp:4122535724475310433
+-----------------------------------
+||---- Block 10 --
+Block ID: MINER-1-BLOCK-10
+Previous Hash: 000000491c061fdedffe1f6e9f0bce27eb3bb820d89e35e916981345ae50736f
+Block Timestamp: 1750790111
+Nonce: 1092289
+    Tx[0] ID:MINER-2-BLOCK-11  Reward:808464432  Value:0.00  Timestamp:3487019090146977336
+    Tx[1] ID:852d86e22d1dead69d9c8c2f709de83393dc95a2631a7286  Reward:1082969  Value:0.00  Timestamp:3256715311915616589
+    Tx[2] ID:BLOCK-12  Reward:1650864229  Value:205658583425920008192.00  Timestamp:3544667378177882417
+    Tx[3] ID:aa57f069095e95a828edc03d2c6840c2abee3cb3  Reward:1162758477  Value:0.00  Timestamp:3688779371068214338
+    Tx[4] ID:  Reward:1633892148  Value:0.00  Timestamp:3688842137436368993
+-----------------------------------
+||---- Block 11 --
+Block ID: MINER-2-BLOCK-11
+Previous Hash: 000008828f71cad0852d86e22d1dead69d9c8c2f709de83393dc95a2631a7286
+Block Timestamp: 1750790114
+Nonce: 1082969
+    Tx[0] ID:MINER-2-BLOCK-12  Reward:808464432  Value:215325096577521623760896.00  Timestamp:7003767441405128805
+    Tx[1] ID:19533011aa57f069095e95a828edc03d2c6840c2abee3cb3  Reward:382815  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-13  Reward:959472993  Value:0.00  Timestamp:3618423744225294132
+    Tx[3] ID:a0c2af13bbc5e63e954132fefd67afd73fef0ad3  Reward:1162758477  Value:0.00  Timestamp:3760836965106142274
+    Tx[4] ID:  Reward:1717843506  Value:13162102051462793134080.00  Timestamp:4122260825126823269
+-----------------------------------
+||---- Block 12 --
+Block ID: MINER-2-BLOCK-12
+Previous Hash: 00000c6fe0fbaa2a19533011aa57f069095e95a828edc03d2c6840c2abee3cb3
+Block Timestamp: 1750790117
+Nonce: 382815
+    Tx[0] ID:MINER-1-BLOCK-13  Reward:808464432  Value:1052332481029620105216.00  Timestamp:4121699902397900129
+    Tx[1] ID:47ca9972a0c2af13bbc5e63e954132fefd67afd73fef0ad3  Reward:998399  Value:0.00  Timestamp:3256715311915616589
+    Tx[2] ID:BLOCK-14  Reward:912667961  Value:0.00  Timestamp:7219940043197265458
+    Tx[3] ID:ee19a65948c5e6a68db2addd3cd201d545639925  Reward:1162758477  Value:0.00  Timestamp:3832894559144070210
+    Tx[4] ID:  Reward:808739685  Value:0.00  Timestamp:4122543219162768945
+-----------------------------------
+||---- Block 13 --
+Block ID: MINER-1-BLOCK-13
+Previous Hash: 000000dbae09983947ca9972a0c2af13bbc5e63e954132fefd67afd73fef0ad3
+Block Timestamp: 1750790121
+Nonce: 998399
+    Tx[0] ID:MINER-2-BLOCK-14  Reward:808464432  Value:0.00  Timestamp:3906927867986326841
+    Tx[1] ID:26df7a2dee19a65948c5e6a68db2addd3cd201d545639925  Reward:573699  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-15  Reward:859006257  Value:52897632905630228414464.00  Timestamp:3473789585835975525
+    Tx[3] ID:1fd577698ae3a1e04f150ee73873bd4f1f5035d1  Reward:1162758477  Value:0.00  Timestamp:3904952153181998146
+    Tx[4] ID:  Reward:942826596  Value:0.00  Timestamp:7221631095466898278
+-----------------------------------
+||---- Block 14 --
+Block ID: MINER-2-BLOCK-14
+Previous Hash: 0000040495f6228626df7a2dee19a65948c5e6a68db2addd3cd201d545639925
+Block Timestamp: 1750790123
+Nonce: 573699
+    Tx[0] ID:MINER-1-BLOCK-15  Reward:808464432  Value:0.00  Timestamp:7292235315571549489
+    Tx[1] ID:ec409a501fd577698ae3a1e04f150ee73873bd4f1f5035d1  Reward:1295667  Value:0.00  Timestamp:3256715311915616589
+    Tx[2] ID:BLOCK-16  Reward:1681024569  Value:0.00  Timestamp:4062864128940860516
+    Tx[3] ID:f3808c8d99e4d602e432087f92120fed61cec3b5  Reward:1162758477  Value:0.00  Timestamp:3977009747219926082
+    Tx[4] ID:  Reward:842151989  Value:0.00  Timestamp:7365698099146536752
+-----------------------------------
+||---- Block 15 --
+Block ID: MINER-1-BLOCK-15
+Previous Hash: 000006871e33b93eec409a501fd577698ae3a1e04f150ee73873bd4f1f5035d1
+Block Timestamp: 1750790127
+Nonce: 1295667
+    Tx[0] ID:MINER-2-BLOCK-16  Reward:808464432  Value:0.00  Timestamp:3473455335173416505
+    Tx[1] ID:dd28f1b8f3808c8d99e4d602e432087f92120fed61cec3b5  Reward:161722  Value:0.00  Timestamp:3256715311915616589
+    Tx[2] ID:BLOCK-17  Reward:1701067059  Value:0.00  Timestamp:3558467374370928693
+    Tx[3] ID:07fbe78fcf96c5775dba7d0b7446166cc9691b7e  Reward:1162758477  Value:0.00  Timestamp:4049067341257854018
+    Tx[4] ID:  Reward:1681482550  Value:52654370971757811073024.00  Timestamp:3918747824089741669
+-----------------------------------
+||---- Block 16 --
+Block ID: MINER-2-BLOCK-16
+Previous Hash: 00000f999f2d9140dd28f1b8f3808c8d99e4d602e432087f92120fed61cec3b5
+Block Timestamp: 1750790131
+Nonce: 161722
+    Tx[0] ID:MINER-2-BLOCK-17  Reward:808464432  Value:269434008631730166038528.00  Timestamp:3774634844469082419
+    Tx[1] ID:582297b107fbe78fcf96c5775dba7d0b7446166cc9691b7e  Reward:38373  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-18  Reward:875769904  Value:0.00  Timestamp:7292003323735532342
+    Tx[3] ID:e943b0b6760ffb43c830aa9b4f26124b4f82d811  Reward:1162758477  Value:0.00  Timestamp:4121124935295781954
+    Tx[4] ID:  Reward:960049761  Value:0.00  Timestamp:3905013631174074676
+-----------------------------------
+||---- Block 17 --
+Block ID: MINER-2-BLOCK-17
+Previous Hash: 000008df39ded2b4582297b107fbe78fcf96c5775dba7d0b7446166cc9691b7e
+Block Timestamp: 1750790132
+Nonce: 38373
+    Tx[0] ID:MINER-1-BLOCK-18  Reward:808464432  Value:1048675558132195262464.00  Timestamp:3906087858245677104
+    Tx[1] ID:6c9dcf2ee943b0b6760ffb43c830aa9b4f26124b4f82d811  Reward:29813  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-19  Reward:859005496  Value:0.00  Timestamp:3688558467846058593
+    Tx[3] ID:4a095e167c3dcd9146a650af63a3a468c54a765b  Reward:1162758477  Value:0.00  Timestamp:3472888063931141186
+    Tx[4] ID:  Reward:1714435638  Value:0.00  Timestamp:3977301035996755760
+-----------------------------------
+||---- Block 18 --
+Block ID: MINER-1-BLOCK-18
+Previous Hash: 00000ecb003466566c9dcf2ee943b0b6760ffb43c830aa9b4f26124b4f82d811
+Block Timestamp: 1750790135
+Nonce: 29813
+    Tx[0] ID:MINER-1-BLOCK-19  Reward:808464432  Value:1052386524225148551168.00  Timestamp:3847544335838175800
+    Tx[1] ID:a299bd034a095e167c3dcd9146a650af63a3a468c54a765b  Reward:376647  Value:0.00  Timestamp:3256715311915616589
+    Tx[2] ID:BLOCK-20  Reward:811675745  Value:1061559512241172119552.00  Timestamp:3761405524872017462
+    Tx[3] ID:07a7862772c7fc3a5f874e411fbc5fe2e1d49daa  Reward:1162758477  Value:0.00  Timestamp:3544945657969069122
+    Tx[4] ID:  Reward:909128292  Value:0.00  Timestamp:3689123621855454517
+-----------------------------------
+||---- Block 19 --
+Block ID: MINER-1-BLOCK-19
+Previous Hash: 000003db8b3309e5a299bd034a095e167c3dcd9146a650af63a3a468c54a765b
+Block Timestamp: 1750790138
+Nonce: 376647
+    Tx[0] ID:MINER-2-BLOCK-20  Reward:808464432  Value:3309114401802646716416.00  Timestamp:7090407870207963233
+    Tx[1] ID:660fe23407a7862772c7fc3a5f874e411fbc5fe2e1d49daa  Reward:675009  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-21  Reward:1630626615  Value:0.00  Timestamp:3689069538838590052
+    Tx[3] ID:5e2ecf231392f2235b9cbf0bf6cfe262365c9a55  Reward:1162758477  Value:0.00  Timestamp:3617003252006997058
+    Tx[4] ID:  Reward:943011888  Value:1062514345730918842368.00  Timestamp:3774917203420655718
+-----------------------------------
+||---- Block 20 --
+Block ID: MINER-2-BLOCK-20
+Previous Hash: 00000c3ca0a0d0fb660fe23407a7862772c7fc3a5f874e411fbc5fe2e1d49daa
+Block Timestamp: 1750790141
+Nonce: 675009
+    Tx[0] ID:MINER-1-BLOCK-21  Reward:808464432  Value:854912687764207042560.00  Timestamp:3474581196375155511
+    Tx[1] ID:d20635235e2ecf231392f2235b9cbf0bf6cfe262365c9a55  Reward:7042  Value:0.00  Timestamp:3256996786892327245
+    Tx[2] ID:BLOCK-22  Reward:946090800  Value:0.00  Timestamp:7090466148750538800
+    Tx[3] ID:f0f623c46f8edeaa7b6d8967ad3a04e3dfd9a10b  Reward:1162758477  Value:0.00  Timestamp:3689060846044924994
+    Tx[4] ID:  Reward:1650800945  Value:0.00  Timestamp:7147883737612772658
+-----------------------------------
+||---- Block 21 --
+Block ID: MINER-1-BLOCK-21
+Previous Hash: 00000a9b7c1a0180d20635235e2ecf231392f2235b9cbf0bf6cfe262365c9a55
+Block Timestamp: 1750790144
+Nonce: 7042
+    Tx[0] ID:MINER-3-BLOCK-22  Reward:808464432  Value:0.00  Timestamp:3833189322566415152
+    Tx[1] ID:0858eefbf0f623c46f8edeaa7b6d8967ad3a04e3dfd9a10b  Reward:186425  Value:0.00  Timestamp:3256996786892327245
+    Tx[2] ID:BLOCK-23  Reward:946155824  Value:13221813027122284855296.00  Timestamp:3558467370884610353
+    Tx[3] ID:2e3dcb2cd49a737e654e8600e90bc95316170737  Reward:1162758477  Value:0.00  Timestamp:3761118440082852930
+    Tx[4] ID:  Reward:963000677  Value:0.00  Timestamp:4121186623657947952
+-----------------------------------
+||---- Block 22 --
+Block ID: MINER-3-BLOCK-22
+Previous Hash: 00000c2003d8a9250858eefbf0f623c46f8edeaa7b6d8967ad3a04e3dfd9a10b
+Block Timestamp: 1750790147
+Nonce: 186425
+    Tx[0] ID:MINER-3-BLOCK-23  Reward:808464432  Value:268456331195823559802880.00  Timestamp:7220167821721153840
+    Tx[1] ID:19eb87b12e3dcb2cd49a737e654e8600e90bc95316170737  Reward:263176  Value:0.00  Timestamp:3256715311915616589
+    Tx[2] ID:BLOCK-24  Reward:862335284  Value:0.00  Timestamp:3761460284953606501
+    Tx[3] ID:0394fe19521f028dce8b0163ec15dd11295c7136  Reward:1162758477  Value:0.00  Timestamp:3833176034120780866
+    Tx[4] ID:  Reward:892874854  Value:206626910122362798080.00  Timestamp:4062921098128548920
+-----------------------------------
+||---- Block 23 --
+Block ID: MINER-3-BLOCK-23
+Previous Hash: 00000dcf01e8a03d19eb87b12e3dcb2cd49a737e654e8600e90bc95316170737
+Block Timestamp: 1750790148
+Nonce: 263176
+    Tx[0] ID:MINER-2-BLOCK-24  Reward:808464432  Value:0.00  Timestamp:4120851044964380980
+    Tx[1] ID:e9f93d340394fe19521f028dce8b0163ec15dd11295c7136  Reward:1574349  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-25  Reward:1684366900  Value:0.00  Timestamp:7004003848532013158
+    Tx[3] ID:8ddd6eb86127cf688d8285fd70a3c4624b0b603c  Reward:1162758477  Value:0.00  Timestamp:3905233628158708802
+    Tx[4] ID:  Reward:892875110  Value:0.00  Timestamp:7219660757781602612
+-----------------------------------
+||---- Block 24 --
+Block ID: MINER-2-BLOCK-24
+Previous Hash: 0000008041f31409e9f93d340394fe19521f028dce8b0163ec15dd11295c7136
+Block Timestamp: 1750790150
+Nonce: 1574349
+    Tx[0] ID:MINER-1-BLOCK-25  Reward:808464432  Value:0.00  Timestamp:3991938839347553844
+    Tx[1] ID:f085d83a8ddd6eb86127cf688d8285fd70a3c4624b0b603c  Reward:915382  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-26  Reward:1630877538  Value:0.00  Timestamp:3619031747644633446
+    Tx[3] ID:4af25c1d9ecf7cef0cfa244fd850ac0f917635b2  Reward:1162758477  Value:0.00  Timestamp:3977291222196636738
+    Tx[4] ID:  Reward:1680958004  Value:13297851803230808309760.00  Timestamp:3631361679645160034
+-----------------------------------
+||---- Block 25 --
+Block ID: MINER-1-BLOCK-25
+Previous Hash: 00000eb04fed97f7f085d83a8ddd6eb86127cf688d8285fd70a3c4624b0b603c
+Block Timestamp: 1750790153
+Nonce: 915382
+    Tx[0] ID:MINER-1-BLOCK-26  Reward:808464432  Value:0.00  Timestamp:3631644263444723554
+    Tx[1] ID:f1853b924af25c1d9ecf7cef0cfa244fd850ac0f917635b2  Reward:32890  Value:0.00  Timestamp:3256433836938905933
+    Tx[2] ID:BLOCK-27  Reward:1717647665  Value:0.00  Timestamp:7220457887367258676
+    Tx[3] ID:b27650e21c8bd854b73965a1414db7c4cc8efca0  Reward:1162758477  Value:0.00  Timestamp:4049348816234564674
+    Tx[4] ID:  Reward:943207778  Value:4246441273897873571840.00  Timestamp:7148401426345111654
+-----------------------------------
+||---- Block 26 --
+Block ID: MINER-1-BLOCK-26
+Previous Hash: 00000d64b75a71f2f1853b924af25c1d9ecf7cef0cfa244fd850ac0f917635b2
+Block Timestamp: 1750790155
+Nonce: 32890
+    Tx[0] ID:MINER-1-BLOCK-27  Reward:808464432  Value:0.00  Timestamp:3545794365569972529
+    Tx[1] ID:4b1d184db27650e21c8bd854b73965a1414db7c4cc8efca0  Reward:397184  Value:0.00  Timestamp:3256996786892327245
+    Tx[2] ID:BLOCK-28  Reward:909456179  Value:0.00  Timestamp:7162468565343810914
+    Tx[3] ID:f021994c744fa6d91d3378750a1e4c86f504e3b0  Reward:858609748  Value:0.00  Timestamp:281474382495799
+    Tx[4] ID:Ãèˇˇ  Reward:858609748  Value:0.00  Timestamp:281474590848306
+-----------------------------------
+||---- Block 27 --
+Block ID: MINER-1-BLOCK-27
+Previous Hash: 00000c6119af01514b1d184db27650e21c8bd854b73965a1414db7c4cc8efca0
+Block Timestamp: 1750790155
+Nonce: 397184
+    Tx[0] ID:MINER-3-BLOCK-28  Reward:808464432  Value:0.00  Timestamp:3619035256649495347
+    Tx[1] ID:b58863fcf021994c744fa6d91d3378750a1e4c86f504e3b0  Reward:258684  Value:0.00  Timestamp:3543542577782151252
+    Tx[2] ID:7  Reward:1750790157  Value:0.00  Timestamp:3543551365285238868
+    Tx[3] ID:25  Reward:1750790155  Value:0.00  Timestamp:3543542577782151252
+    Tx[4] ID:5  Reward:1750790156  Value:0.00  Timestamp:3543551365285238868
+-----------------------------------
+||---- Block 28 --
+Block ID: MINER-3-BLOCK-28
+Previous Hash: 00000e193356de92b58863fcf021994c744fa6d91d3378750a1e4c86f504e3b0
+Block Timestamp: 1750790160
+Nonce: 258684
+    Tx[0] ID:TX-331-17  Reward:2  Value:29.65  Timestamp:1750790157
+    Tx[1] ID:TX-319-125  Reward:2  Value:38.84  Timestamp:1750790155
+    Tx[2] ID:TX-331-15  Reward:2  Value:33.71  Timestamp:1750790156
+    Tx[3] ID:TX-319-126  Reward:2  Value:42.94  Timestamp:1750790156
+    Tx[4] ID:TX-331-16  Reward:2  Value:14.23  Timestamp:1750790156
+-----------------------------------
+========= Ledger dump end =========
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
+[Validator] Bloco MINER-3-BLOCK-28 tem previous_hash errado
 [Controller] Sinal SIGINT recebido. Limpando recursos...
 [Controller] Encerrando sistema...

@@ -23,6 +23,7 @@
 
 extern sem_t *empty, *full, *ledger_sem,*txpool_sem;
 extern Config cfg; 
+extern int stats_msqid;
 
 // IDs de memória partilhada
 extern char previous_hash[HASH_SIZE];

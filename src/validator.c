@@ -3,13 +3,13 @@
 #include "pow.h"
 #include <fcntl.h>
 #include <pthread.h>
+#include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/shm.h>
 #include <unistd.h>
-
 
 bool validate_block(TransactionBlock *block, Ledger *ledger) {
   TransactionPool *pool = (TransactionPool *)shmat(shm_pool_id, NULL, 0);
@@ -44,7 +44,10 @@ bool validate_block(TransactionBlock *block, Ledger *ledger) {
         ok = true;
         pool->transactions_pending_set[i].empty = 1;
         sem_post(empty); // liberta espaço na pool
-        sem_wait(full);  // decrementa full
+        if (kill(getppid(), SIGUSR2) == -1) {
+          perror("kill(SIGUSR2)");
+        }
+        sem_wait(full); // decrementa full
         break;
       }
     }
@@ -129,6 +132,9 @@ void run_validator() {
     print_block_info(blk);
 
     // valida e, se OK, insere na ledger
+    BlockMsg msg;
+
+    // valida e, se OK, insere na ledger
     if (validate_block(blk, ledger)) {
       if (ledger->current_block < ledger->size) {
         TransactionBlock *dst = &ledger->blocks[ledger->current_block];
@@ -136,19 +142,14 @@ void run_validator() {
         log_message("[Validator] Inserido bloco %s na ledger (idx=%d)\n",
                     blk->txb_id, ledger->current_block);
         ledger->current_block++;
-        key_t key = ftok(BLOCK_MSG_QUEUE_FILE, BLOCK_MSG_QUEUE_ID);
-        int msqid = msgget(key, IPC_CREAT | 0666);
-        if (msqid < 0) {
-          perror("validator msgget");
+
+        // envia bloco às estatísticas
+        msg.mtype = 1;
+        msg.block = *blk;
+        if (msgsnd(stats_msqid, &msg, sizeof(msg.block), 0) < 0) {
+          perror("validator msgsnd to stats");
         } else {
-          BlockMsg msg;
-          msg.mtype = 1;
-          msg.block = *blk; // copy the block struct
-          if (msgsnd(msqid, &msg, sizeof(msg.block), 0) < 0) {
-            perror("validator msgsnd");
-          } else {
-            log_message("[Validator] Sent block %s to stats\n", blk->txb_id);
-          }
+          log_message("[Validator] Sent block %s to stats\n", blk->txb_id);
         }
       } else {
         log_message("[Validator] Ledger cheia, ignorando bloco %s\n",
