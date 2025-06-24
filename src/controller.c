@@ -29,13 +29,13 @@
 #define HASH_SIZE 65 
 
 
-char previous_hash[HASH_SIZE] = INITIAL_HASH;
+
 
 unsigned block_counter = 0;
 Config cfg;
 pid_t miner_pid, validator_pid, stats_pid;  //✅
 int log_fd;                                 //✅
-sem_t *log_sem, *txpool_sem, *empty, *full; //✅
+sem_t *log_sem, *txpool_sem, *empty, *full, *ledger_sem; //✅
 
 // Logs a formatted message to file and terminal with semaphore protection //✅
 void log_message(const char *format, ...) {
@@ -156,6 +156,14 @@ int main() {
     exit(1);
   }
 
+  // Ledger semaphore //✅
+  sem_unlink("Ledger");
+  ledger_sem = sem_open("Ledger", O_CREAT | O_EXCL, 0600, 1);
+  if (ledger_sem == SEM_FAILED) {
+    perror("sem_open (Ledger_SEMAPHORE)");
+    exit(1);
+  }
+
   // Transaction pool semaphore //✅
   sem_unlink("empty");
   empty = sem_open("empty", O_CREAT | O_EXCL, 0600, cfg.TX_POOL_SIZE);
@@ -191,8 +199,8 @@ int main() {
 
   // shared memorys
   shm_pool_id = create_transaction_pool(cfg.TX_POOL_SIZE);
-  // shm_ledger_id = create_ledger(cfg.BLOCKCHAIN_BLOCKS);
-  // log_message("[Controller] Memórias partilhadas criadas com sucesso.\n");
+  shm_ledger_id = create_ledger(cfg.BLOCKCHAIN_BLOCKS, cfg.TX_POOL_SIZE);
+  log_message("[Controller] Memórias partilhadas criadas com sucesso.\n");
 
   if ((miner_pid = fork()) == 0) {
     run_miner(cfg.NUM_MINERS);
@@ -210,13 +218,13 @@ int main() {
     cleanup();
   }
 
-  // if ((stats_pid = fork()) == 0) {
-  //   run_statistics();
-  //   exit(0);
-  // } else if (stats_pid < 0) {
-  //   log_message("Erro: falha ao criar processo Statistics\n");
-  //   cleanup();
-  // }
+  if ((stats_pid = fork()) == 0) {
+    run_statistics();
+    exit(0);
+  } else if (stats_pid < 0) {
+    log_message("Erro: falha ao criar processo Statistics\n");
+    cleanup();
+  }
 
   // log_message("[Controller] Processos filhos criados com sucesso.\n");
 

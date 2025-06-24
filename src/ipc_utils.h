@@ -9,20 +9,26 @@
 #include <stdlib.h>
 #include <time.h>
 #include <semaphore.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
 
 #define TX_ID_LEN 64 //???
 #define TXB_ID_LEN 64 // ???
 #define HASH_SIZE 65  // SHA256_DIGEST_LENGTH * 2 + 1
+#define BLOCK_MSG_QUEUE_FILE "/tmp/DEIChain"
+#define BLOCK_MSG_QUEUE_ID   'B'
 
-extern sem_t *empty, *full;
+extern sem_t *empty, *full, *ledger_sem,*txpool_sem;
 extern Config cfg; 
 
 // IDs de memória partilhada
 extern char previous_hash[HASH_SIZE];
-extern unsigned block_counter;
 extern int shm_pool_id;
 extern int shm_ledger_id;
 extern Config cfg;
+
+
 
 // ✅
 typedef struct {
@@ -32,6 +38,8 @@ typedef struct {
     time_t timestamp;          // timestamp da criação
 } Transaction;
 
+
+
 // Transaction Block structure
 typedef struct {
   char txb_id[TXB_ID_LEN];              // Unique block ID (e.g., ThreadID + #)
@@ -40,6 +48,11 @@ typedef struct {
   unsigned int nonce;                   // PoW solution
   Transaction transactions[];            // Array of transactions
 } TransactionBlock;
+
+typedef struct {
+    long mtype;                  // must be >0
+    TransactionBlock block;      // the full block
+} BlockMsg;
 
 // Entrada na pool de transações ✅
 typedef struct {
@@ -54,13 +67,14 @@ typedef struct {
 } TransactionPool;
 
 typedef struct {
+    char previous_hash[HASH_SIZE];
     int current_block;
     int size;
-    Transaction blocks[];  // array de blocos de transações
+    TransactionBlock blocks[];  // array de blocos de transações
 } Ledger;
 
 int create_transaction_pool(int size);
-int create_ledger(int size);
+int create_ledger(int size, int transaction_size);
 
 static inline size_t get_transaction_block_size() {
   if (cfg.TRANSACTIONS_PER_BLOCK == 0) {

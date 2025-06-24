@@ -44,11 +44,15 @@ int create_transaction_pool(int size) {
     return shm_pool_id;
 }
 
-int create_ledger(int size) {
-    shm_ledger_id = shmget(IPC_PRIVATE, sizeof(Ledger), IPC_CREAT | 0666);
+int create_ledger(int size, int transaction_size) {
+    shm_ledger_id = shmget(IPC_PRIVATE, sizeof(Ledger) + size * (sizeof(TransactionBlock) + transaction_size * sizeof(Transaction)) , IPC_CREAT | 0600);
     if (shm_ledger_id == -1) {
         perror("Erro ao criar memória partilhada para o ledger");
         exit(1);
     }
+    Ledger *chain = (Ledger *)shmat(shm_ledger_id, NULL, 0);
+    chain->size=size;
+    chain->current_block=0;
+    shmdt(chain);
     return shm_ledger_id;
 }

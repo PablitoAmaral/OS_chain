@@ -3,9 +3,9 @@
 #include "ipc_utils.h"
 #include "log.h"
 #include "pow.h"
-#include <openssl/conf.h>
-#include <openssl/crypto.h>
-#include <openssl/evp.h>
+// #include <openssl/conf.h>
+// #include <openssl/crypto.h>
+// #include <openssl/evp.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -17,25 +17,22 @@
 #include <unistd.h>
 #include <fcntl.h>    // para open(), O_WRONLY, O_RDONLY, etc.
 #include <sys/stat.h> // se fores usar mkfifo() ou outras flags de modo
+#include <signal.h>
 
 
 #define VALIDATOR_FIFO "/tmp/VALIDATOR_INPUT"
 
+TransactionPool *pool;
+Ledger *ledger;
+
 
 char check_hash[HASH_SIZE];
-static pthread_mutex_t header_lock = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t tx_mutex = PTHREAD_MUTEX_INITIALIZER;
+bool first =true;
+static pthread_mutex_t tx_mutex  = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t tx_ready_cond = PTHREAD_COND_INITIALIZER;
 
-#define LEDGER_SIZE 4
-TransactionBlock ledger[LEDGER_SIZE];
 
-static Transaction generate_random_transaction(int tx_number);
-static TransactionBlock generate_random_block(const char *prev_hash,
-                                              int block_number);
 static void print_block_info(TransactionBlock *block);
-static void blkcpy(TransactionBlock *dest, TransactionBlock *src);
-static void dump_ledger(void);
 
 
 static void send_block_to_validator(TransactionBlock *block, size_t bytes) {
@@ -63,10 +60,7 @@ void *tx_monitor_thread(void *arg) {
     }
 
     sem_post(full);
-
-    pthread_mutex_lock(&tx_mutex);
     pthread_cond_broadcast(&tx_ready_cond); // acorda todos os miners
-    pthread_mutex_unlock(&tx_mutex);
   }
 
   return NULL;
@@ -76,11 +70,18 @@ void *miner_thread(void *arg) {
   int id = *((int *)arg);
   log_message("[Miner Thread %d] Starting block mining…\n", id);
 
-  TransactionPool *pool = (TransactionPool *)shmat(shm_pool_id, NULL, 0);
+  pool = (TransactionPool *)shmat(shm_pool_id, NULL, 0);
   if (pool == (void *)-1) {
     perror("shmat TxGen");
     exit(1);
   }
+
+  ledger = (Ledger *)shmat(shm_ledger_id, NULL, 0);
+  if (pool == (void *)-1) {
+    perror("shmat TxGen");
+    exit(1);
+  }
+  memcpy(ledger->previous_hash, INITIAL_HASH, HASH_SIZE);
 
   size_t bytes = sizeof(TransactionBlock) +
                  cfg.TRANSACTIONS_PER_BLOCK * sizeof(Transaction);
@@ -88,7 +89,9 @@ void *miner_thread(void *arg) {
   while (1) {
     int count = 0;
     char check_hash[HASH_SIZE];
-    strncpy(check_hash, previous_hash, HASH_SIZE);
+    sem_wait(ledger_sem);
+    strncpy(check_hash, ledger->previous_hash, HASH_SIZE);
+    sem_post(ledger_sem);
     TransactionBlock *block = calloc(1, bytes);
     size_t n = pool->size;
     bool *picked = calloc(n, sizeof(bool));
@@ -98,10 +101,8 @@ void *miner_thread(void *arg) {
     }
 
     unsigned idx;
-    pthread_mutex_lock(&header_lock);
-    idx = block_counter;
-    strncpy(block->previous_block_hash, previous_hash, HASH_SIZE);
-    pthread_mutex_unlock(&header_lock);
+    idx = ledger->current_block;
+    strncpy(block->previous_block_hash, ledger->previous_hash, HASH_SIZE);
 
     snprintf(block->txb_id, TXB_ID_LEN, "MINER-%d-BLOCK-%u", id, idx);
 
@@ -109,7 +110,7 @@ void *miner_thread(void *arg) {
       pthread_mutex_lock(&tx_mutex);
       pthread_cond_wait(&tx_ready_cond, &tx_mutex);
       pthread_mutex_unlock(&tx_mutex);
-      if (strcmp(check_hash, previous_hash) != 0) {
+      if (strcmp(check_hash, ledger->previous_hash) != 0) {
         break;
       }
 
@@ -133,17 +134,23 @@ void *miner_thread(void *arg) {
 
     send_block_to_validator(block, bytes);
 
-    
-
-    // enviar para o validator
     free(picked);
     free(block);
   }
 }
 
+static void handle_sigterm(int _){  
+    /* desmonta tudo e sai */
+    if(pool)   shmdt(pool);
+    if(ledger) shmdt(ledger);
+    _exit(0);
+}
+
 void run_miner(int num_miners) {
 
-  log_message("[Miner] Genesis hash: %s\n", previous_hash);
+  signal(SIGTERM, handle_sigterm);
+
+  log_message("[Miner] Genesis hash: %s\n", INITIAL_HASH);
 
   pthread_t threads[num_miners];
   log_message("[Miner] Processo miner iniciado com %d threads\n", num_miners);
@@ -167,60 +174,6 @@ void run_miner(int num_miners) {
   log_message("[Miner] Todas as threads terminaram.\n");
 }
 
-// Transaction generate_random_transaction(int tx_number) {
-//   Transaction tx;
-
-//   // Generate a unique tx_id (e.g., PID + transaction number)
-//   snprintf(tx.TX_ID, TX_ID_LEN, "TX-%d-%d", getpid(), tx_number);
-
-//   // Reward: initially from 1 to 3
-//   tx.reward = rand() % 3 + 1;
-
-//   // 3 % chance of aging, 1% of doubling aging
-//   int age_chance = rand() % 101;
-//   if (age_chance <= 3) tx.reward++;
-//   if (age_chance <= 1) tx.reward++;
-
-//   // Value: random float between 0.01 and 100.00
-//   tx.value = ((float)(rand() % 10000)) / 100.0f + 0.01f;
-
-//   // Timestamp: now
-//   tx.timestamp = time(NULL);
-
-//   return tx;
-// }
-
-// TransactionBlock generate_random_block(const char *prev_hash,
-//                                        int block_number) {
-//   TransactionBlock block;
-
-//   // Generate a unique block ID using thread ID + number
-//   pthread_t tid = pthread_self();
-//   snprintf(block.txb_id, TXB_ID_LEN, "BLOCK-%lu-%d", (unsigned long)tid,
-//            block_number);
-
-//   // Copy the previous hash
-//   strncpy(block.previous_block_hash, prev_hash, HASH_SIZE);
-
-//   block.transactions =
-//       (Transaction *)malloc(sizeof(Transaction) * transactions_per_block);
-
-//   // Fill with random transactions
-//   for (int i = 0; i < transactions_per_block; ++i) {
-//     block.transactions[i] = generate_random_transaction(i);
-//   }
-
-//   PoWResult r;
-//   do {
-//     // Timestamp: current time
-//     block.timestamp = time(NULL);
-//     printf("Computing the PoW with timestamp %ld\n", block.timestamp);
-//     r = proof_of_work(&block);
-
-//   } while (r.error == 1);
-
-//   return block;
-// }
 
 void print_block_info(TransactionBlock *block) {
   // Print basic block info
@@ -236,11 +189,3 @@ void print_block_info(TransactionBlock *block) {
            tx.TX_ID, tx.reward, tx.value, tx.timestamp);
   }
 }
-
-// void blkcpy(TransactionBlock *dest, TransactionBlock *src) {
-//   dest->nonce = src->nonce;
-//   dest->timestamp = src->timestamp;
-//   dest->transactions = src->transactions;
-//   strcpy(dest->txb_id, src->txb_id);
-//   strcpy(dest->previous_block_hash, src->previous_block_hash);
-// }
