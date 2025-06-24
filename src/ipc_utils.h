@@ -53,9 +53,12 @@ typedef struct {
 } TransactionBlock;
 
 typedef struct {
-    long mtype;                  // must be >0
-    TransactionBlock block;      // the full block
-} BlockMsg;
+    long   mtype;
+    int    miner_id;
+    int    valid;             // 1 = accepted by validator, 0 = rejected
+    int    credits;           // (0 if invalid)
+    time_t block_timestamp;
+} StatsMsg;
 
 // Entrada na pool de transações ✅
 typedef struct {

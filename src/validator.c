@@ -37,7 +37,8 @@ bool validate_block(TransactionBlock *block, Ledger *ledger) {
   // sem_post(empty)
   sem_wait(txpool_sem);
 
-  //increasing the age of each transaction each time it touches the Transactions Pool
+  // increasing the age of each transaction each time it touches the
+  // Transactions Pool
   for (int i = 0; i < pool->size; i++) {
     if (!pool->transactions_pending_set[i].empty) {
       pool->transactions_pending_set[i].age++;
@@ -129,6 +130,8 @@ void run_validator() {
     exit(1);
   }
 
+  StatsMsg sm;
+
   // 5) Loop infinito: lê cada bloco do pipe e processa
   for (;;) {
     ssize_t r = read(fd, blk, block_bytes);
@@ -149,10 +152,8 @@ void run_validator() {
     print_block_info(blk);
 
     // valida e, se OK, insere na ledger
-    BlockMsg msg;
-
-    // valida e, se OK, insere na ledger
-    if (validate_block(blk, ledger)) {
+    bool ok = validate_block(blk, ledger);
+    if (ok) {
       if (ledger->current_block < ledger->size) {
         TransactionBlock *dst = &ledger->blocks[ledger->current_block];
         memcpy(dst, blk, block_bytes);
@@ -160,17 +161,52 @@ void run_validator() {
                     blk->txb_id, ledger->current_block);
         ledger->current_block++;
 
-        // envia bloco às estatísticas
-        msg.mtype = 1;
-        msg.block = *blk;
-        if (msgsnd(stats_msqid, &msg, sizeof(msg.block), 0) < 0) {
+        // extract miner ID
+        int miner_id = 0;
+        if (sscanf(blk->txb_id, "MINER-%d-", &miner_id) != 1) {
+          miner_id = 0;
+        }
+
+        // compute credits
+        int total_credits = 0;
+        for (int i = 0; i < cfg.TRANSACTIONS_PER_BLOCK; i++) {
+          total_credits += blk->transactions[i].reward;
+        }
+
+        sm.mtype = 1;
+        sm.miner_id = miner_id;
+        sm.valid = 1;
+        sm.credits = total_credits;
+        sm.block_timestamp = blk->timestamp;
+
+        if (msgsnd(stats_msqid, &sm, sizeof(sm) - sizeof(long), 0) < 0) {
           perror("validator msgsnd to stats");
         } else {
-          log_message("[Validator] Sent block %s to stats\n", blk->txb_id);
+          log_message("[Validator] Sent stats for %s: miner=%d valid=%d "
+                      "credits=%d ts=%ld\n",
+                      blk->txb_id, sm.miner_id, sm.valid, sm.credits,
+                      (long)sm.block_timestamp);
         }
       } else {
         log_message("[Validator] Ledger cheia, ignorando bloco %s\n",
                     blk->txb_id);
+      }
+    } else {
+      // invalid case: still report to statistics
+      int miner_id = 0;
+      if (sscanf(blk->txb_id, "MINER-%d-", &miner_id) != 1) {
+        miner_id = 0;
+      }
+
+      else {
+        // invalid case
+        
+        sm.mtype = 1;
+        sm.miner_id = miner_id;
+        sm.valid = 0;
+        sm.credits = 0;
+        sm.block_timestamp = blk->timestamp; // still send timestamp
+        msgsnd(stats_msqid, &sm, sizeof(sm) - sizeof(long), 0);
       }
     }
 
