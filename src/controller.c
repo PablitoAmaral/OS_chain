@@ -53,10 +53,6 @@ static void dump_pool_stats(void);
 
 int main() {
   signal(SIGUSR1, handle_sigusr1);
-  sigset_t mask1;
-  sigemptyset(&mask1);
-  sigaddset(&mask1, SIGINT);
-  pthread_sigmask(SIG_BLOCK, &mask1, NULL);
 
   // mascara para bloquear sigurs2
   sigset_t mask;
@@ -76,10 +72,6 @@ int main() {
   pthread_t monitor_ledger;
   pthread_create(&monitor_ledger, NULL, validator_spawner_thread, NULL);
 
-  sigset_t unblock;
-sigemptyset(&unblock);
-sigaddset(&unblock, SIGINT);
-pthread_sigmask(SIG_UNBLOCK, &unblock, NULL);
 
   signal(SIGINT, handle_sigint);
 
