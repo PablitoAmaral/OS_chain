@@ -46,9 +46,9 @@ void run_miner(int num_miners) {
   pthread_t threads[num_miners];
   log_message("[Miner] Processo miner iniciado com %d threads\n", num_miners);
 
+  int *id = malloc(sizeof(int)*cfg.NUM_MINERS);
   for (int i = 0; i < num_miners; i++) {
-    int *id = malloc(sizeof(int));
-    *id = i + 1;
+    id[i] = i+1;
     if (pthread_create(&threads[i], NULL, miner_thread, id) != 0) {
       perror("Erro ao criar thread");
       exit(1);
